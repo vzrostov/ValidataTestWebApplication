@@ -10,6 +10,15 @@ namespace ValidataTestWebApplication.Models
     public class Customer
     {
         public Customer() {}
+        public Customer(int customerID, string firstName, string lastName, string address, string postalCode, ICollection<Order> orders) 
+        { 
+            CustomerID = customerID;
+            FirstName = firstName;
+            LastName = lastName;
+            Address = address;
+            PostalCode = postalCode;
+            Orders = orders;
+        }
 
         public int CustomerID { get; set; }
 
