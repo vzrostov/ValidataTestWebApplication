@@ -13,15 +13,25 @@ namespace ValidataTestWebApplication.DAL
     /// </summary>
     public class UnitOfWork : IDisposable
     {
-        private CustomerDbContext dbContext = new CustomerDbContext();
+        private ICustomerDbContext customerDbContext;
         private CommonRepository<Customer> customerRepository;
         private CommonRepository<Order> orderRepository;
+
+        public UnitOfWork()
+        {
+            customerDbContext = new CustomerDbContext();
+        }
+        
+        public UnitOfWork(ICustomerDbContext dbctxt)
+        {
+            customerDbContext = dbctxt;
+        }
 
         public IQueryable<Customer> GetCustomers(Expression<Func<Customer, bool>> filter = null,
             Func<IQueryable<Customer>, IOrderedQueryable<Customer>> orderBy = null,
             string includeProperties = "")
         {
-            return customerRepository.GetAll(filter, orderBy, includeProperties);
+            return CustomerRepository.GetAll(filter, orderBy, includeProperties);
         }
 
         public Task<Customer> GetCustomerAsync(int id)
@@ -86,7 +96,7 @@ namespace ValidataTestWebApplication.DAL
             {
                 if (this.customerRepository == null)
                 {
-                    this.customerRepository = new CommonRepository<Customer>(dbContext);
+                    this.customerRepository = new CommonRepository<Customer>(customerDbContext);
                 }
                 return customerRepository;
             }
@@ -98,7 +108,7 @@ namespace ValidataTestWebApplication.DAL
             {
                 if (this.orderRepository == null)
                 {
-                    this.orderRepository = new CommonRepository<Order>(dbContext);
+                    this.orderRepository = new CommonRepository<Order>(customerDbContext);
                 }
                 return orderRepository;
             }
@@ -106,7 +116,7 @@ namespace ValidataTestWebApplication.DAL
 
         private Task<int> SaveChangesAsync() 
         {
-            return dbContext.SaveChangesAsync();
+            return customerDbContext.Context.SaveChangesAsync();
         }
 
         #region IDiposable
@@ -118,7 +128,7 @@ namespace ValidataTestWebApplication.DAL
             {
                 if (disposing)
                 {
-                    dbContext.Dispose();
+                    customerDbContext.Context.Dispose();
                 }
             }
             this.disposed = true;

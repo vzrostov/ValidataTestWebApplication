@@ -11,19 +11,19 @@ namespace ValidataTestWebApplication.DAL
 {
     public class CommonRepository<T> : IRepository<T> where T : class
     {
-        CustomerDbContext _context = null; 
+        ICustomerDbContext _customerDbContext = null; 
         DbSet<T> _dbSet = null;
 
         public CommonRepository()
         {
-            this._context = new CustomerDbContext();
-            _dbSet = _context.Set<T>();
+            this._customerDbContext = new CustomerDbContext();
+            _dbSet = _customerDbContext.Context.Set<T>();
         }
 
-        public CommonRepository(CustomerDbContext _context)
+        public CommonRepository(ICustomerDbContext _context)
         {
-            this._context = _context;
-            _dbSet = _context.Set<T>();
+            this._customerDbContext = _context;
+            _dbSet = _context.Context.Set<T>();
         }
 
         public IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null,
@@ -66,12 +66,12 @@ namespace ValidataTestWebApplication.DAL
         public void Update(T obj)
         {
             _dbSet.Attach(obj);
-            _context.Entry(obj).State = EntityState.Modified;
+            _customerDbContext.Context.Entry(obj).State = EntityState.Modified;
         }
 
         public void Delete(T obj)
         {
-            if (_context.Entry(obj).State == EntityState.Detached)
+            if (_customerDbContext.Context.Entry(obj).State == EntityState.Detached)
             {
                 _dbSet.Attach(obj);
             }
