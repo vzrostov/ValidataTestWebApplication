@@ -14,7 +14,12 @@ namespace ValidataTestWebApplication.Controllers
 {
     public class ProductsController : Controller
     {
-        private InternalUnitOfWork unitOfWork = new InternalUnitOfWork();
+        private InternalUnitOfWork unitOfWork;
+
+        public ProductsController()
+        {
+            unitOfWork = new InternalUnitOfWork();
+        }
 
         // GET: Products
         public async Task<ActionResult> Index()

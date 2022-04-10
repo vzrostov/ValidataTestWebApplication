@@ -8,6 +8,8 @@ namespace ValidataTestWebApplication.Models
 {
     public class Product
     {
+        public Product() { }
+
         [Required]
         public int ProductId { get; set; }
 

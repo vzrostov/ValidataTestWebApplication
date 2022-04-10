@@ -9,6 +9,8 @@ namespace ValidataTestWebApplication.Models
 {
     public class Customer
     {
+        public Customer() {}
+
         public int CustomerID { get; set; }
 
         [Required]

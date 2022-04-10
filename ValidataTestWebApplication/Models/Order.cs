@@ -10,6 +10,8 @@ namespace ValidataTestWebApplication.Models
 {
     public class Order
     {
+        public Order() { }
+
         [Required]
         public int OrderId { get; set; }
 
