@@ -1,3 +1,3 @@
 # ValidataTestWebApplication
-![alt text](ValidataTestWebApplication/Content/images/Validatalogo.webp)
-![alt text](ValidataTestWebApplication/Content/images/issue.png)
+![Validata logo](ValidataTestWebApplication/Content/images/Validatalogo.webp)
+![Validata issue description](ValidataTestWebApplication/Content/images/issue.png)
