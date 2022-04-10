@@ -4,3 +4,8 @@
 /.vs/ValidataTestWebApplication/v17/TestStore/0/000.testlog
 /.vs/ValidataTestWebApplication/v17/TestStore/0/testlog.manifest
 /packages
+/.vs
+/ValidataTestWebApplication/bin
+/ValidataTestWebApplication/obj
+/ValidataUnitTestProject/bin
+/ValidataUnitTestProject/obj
