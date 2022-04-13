@@ -134,6 +134,7 @@
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="DAL\CommonRepository.cs" />
     <Compile Include="DAL\CustomerRepository.cs" />
+    <Compile Include="DAL\ICustomerDbContext.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\CustomerDbContext.cs" />
     <Compile Include="DAL.Internal\InternalUnitOfWork.cs" />

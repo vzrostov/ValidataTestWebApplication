@@ -19,6 +19,7 @@ namespace ValidataTestWebApplication.Models
             Orders = orders;
         }
 
+        [Key]
         public int CustomerID { get; set; }
 
         [Required]
