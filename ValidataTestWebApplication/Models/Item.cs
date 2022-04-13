@@ -9,6 +9,16 @@ namespace ValidataTestWebApplication.Models
 {
     public class Item
     {
+        public Item() { }
+        public Item(float quantity, int productID, Product product, int orderID, Order order) 
+        { 
+            Quantity = quantity;
+            ProductID = productID;
+            Product = product;
+            OrderID = orderID;
+            Order = order;
+        }
+
         [Required]
         public int ItemId { get; set; }
 

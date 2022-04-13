@@ -14,7 +14,12 @@ namespace ValidataTestWebApplication.Controllers
 {
     public class CustomersController : Controller
     {
-        private InternalUnitOfWork unitOfWork = new InternalUnitOfWork();
+        private InternalUnitOfWork unitOfWork;
+
+        public CustomersController()
+        {
+            unitOfWork = new InternalUnitOfWork();
+        }
 
         // GET: Customers
         public ActionResult Index()

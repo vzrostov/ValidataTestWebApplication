@@ -11,19 +11,26 @@ namespace ValidataTestWebApplication.DAL
 {
     public class CommonRepository<T> : IRepository<T> where T : class
     {
-        CustomerDbContext _context = null; 
+        ICustomerDbContext _customerDbContext = null; 
         DbSet<T> _dbSet = null;
 
         public CommonRepository()
         {
-            this._context = new CustomerDbContext();
-            _dbSet = _context.Set<T>();
+            this._customerDbContext = new CustomerDbContext();
+            _dbSet = _customerDbContext.DBContext.Set<T>();
         }
 
-        public CommonRepository(CustomerDbContext _context)
+        public CommonRepository(ICustomerDbContext _context)
         {
-            this._context = _context;
-            _dbSet = _context.Set<T>();
+            _customerDbContext = _context;
+            _dbSet = _context.DBContext.Set<T>();
+        }
+
+        public CommonRepository(ICustomerDbContext _context, DbSet<T> dbSet)
+        {
+            _customerDbContext = _context;
+            _dbSet = dbSet;
+            //_dbSet = _context.Context.Set<T>();
         }
 
         public IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null,
@@ -34,6 +41,7 @@ namespace ValidataTestWebApplication.DAL
 
             if (filter != null)
             {
+                //query = query.Where((c) => { return c.CustomerId == 19 });
                 query = query.Where(filter);
             }
 
@@ -45,6 +53,7 @@ namespace ValidataTestWebApplication.DAL
 
             if (orderBy != null)
             {
+                //return query.OrderBy((x => x.));
                 return orderBy(query);
             }
             else
@@ -58,6 +67,11 @@ namespace ValidataTestWebApplication.DAL
             return _dbSet.FindAsync(id);
         }
 
+        public T Get(int id)
+        {
+            return _dbSet.Find(id);
+        }
+
         public void Create(T obj)
         {
             _dbSet.Add(obj);
@@ -66,12 +80,12 @@ namespace ValidataTestWebApplication.DAL
         public void Update(T obj)
         {
             _dbSet.Attach(obj);
-            _context.Entry(obj).State = EntityState.Modified;
+            _customerDbContext.DBContext.Entry(obj).State = EntityState.Modified;
         }
 
         public void Delete(T obj)
         {
-            if (_context.Entry(obj).State == EntityState.Detached)
+            if (_customerDbContext.DBContext.Entry(obj).State == EntityState.Detached)
             {
                 _dbSet.Attach(obj);
             }

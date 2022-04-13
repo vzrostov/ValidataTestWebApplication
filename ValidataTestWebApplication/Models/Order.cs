@@ -10,6 +10,16 @@ namespace ValidataTestWebApplication.Models
 {
     public class Order
     {
+        public Order() { }
+        public Order(DateTime date, float price, int customerID, Customer customer, ICollection<Item> items) 
+        { 
+            Date = date; 
+            Price = price;
+            CustomerID = customerID;
+            Customer = customer;
+            Items = items;
+        }
+
         [Required]
         public int OrderId { get; set; }
 

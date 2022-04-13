@@ -13,70 +13,88 @@ namespace ValidataTestWebApplication.DAL
     /// </summary>
     public class UnitOfWork : IDisposable
     {
-        private CustomerDbContext dbContext = new CustomerDbContext();
+        private ICustomerDbContext customerDbContext;
         private CommonRepository<Customer> customerRepository;
         private CommonRepository<Order> orderRepository;
+
+        public UnitOfWork()
+        {
+            customerDbContext = new CustomerDbContext();
+        }
+        
+        /// <summary>
+        /// Constructor using for tests (possible to set mock dbcontext)
+        /// </summary>
+        /// <param name="dbctxt">Dbcontext, usually mock object</param>
+        public UnitOfWork(ICustomerDbContext dbcontext)
+        {
+            customerDbContext = dbcontext;
+        }
 
         public IQueryable<Customer> GetCustomers(Expression<Func<Customer, bool>> filter = null,
             Func<IQueryable<Customer>, IOrderedQueryable<Customer>> orderBy = null,
             string includeProperties = "")
         {
-            return customerRepository.GetAll(filter, orderBy, includeProperties);
+            return CustomerRepository.GetAll(filter, orderBy, includeProperties);
         }
 
         public Task<Customer> GetCustomerAsync(int id)
         {
-            return customerRepository.GetAsync(id);
+            return CustomerRepository.GetAsync(id);
+        }
+
+        public Customer GetCustomer(int id)
+        {
+            return CustomerRepository.Get(id);
         }
 
         public Task<int> CreateCustomerAsync(Customer customer)
         {
-            customerRepository.Create(customer);
+            CustomerRepository.Create(customer);
             return SaveChangesAsync();
         }
 
         public Task<int> UpdateCustomerAsync(Customer customer)
         {
-            customerRepository.Update(customer);
+            CustomerRepository.Update(customer);
             return SaveChangesAsync();
         }
 
         public Task<int> DeleteCustomerAsync(Customer customer)
         {
-            customerRepository.Delete(customer);
+            CustomerRepository.Delete(customer);
             return SaveChangesAsync();
         }
-
 
         public IQueryable<Order> GetOrders(Expression<Func<Order, bool>> filter = null,
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null,
             string includeProperties = "")
         {
-            return orderRepository.GetAll(filter, orderBy, includeProperties);
+            return OrderRepository.GetAll(filter, orderBy, includeProperties);
         }
 
         public Task<Order> GetOrderAsync(int id)
         {
-            return orderRepository.GetAsync(id);
+            return OrderRepository.GetAsync(id);
         }
 
         public Task<int> CreateOrderAsync(Order order)
         {
             order.Recalculate();
-            orderRepository.Create(order);
+            OrderRepository.Create(order);
             return SaveChangesAsync();
         }
 
         public Task<int> UpdateOrderAsync(Order order)
         {
             order.Recalculate();
-            orderRepository.Update(order);
+            OrderRepository.Update(order);
             return SaveChangesAsync();
         }
 
         public Task<int> DeleteOrderAsync(Order order)
         {
-            orderRepository.Delete(order);
+            OrderRepository.Delete(order);
             return SaveChangesAsync();
         }
 
@@ -86,7 +104,7 @@ namespace ValidataTestWebApplication.DAL
             {
                 if (this.customerRepository == null)
                 {
-                    this.customerRepository = new CommonRepository<Customer>(dbContext);
+                    this.customerRepository = new CommonRepository<Customer>(customerDbContext);
                 }
                 return customerRepository;
             }
@@ -98,7 +116,7 @@ namespace ValidataTestWebApplication.DAL
             {
                 if (this.orderRepository == null)
                 {
-                    this.orderRepository = new CommonRepository<Order>(dbContext);
+                    this.orderRepository = new CommonRepository<Order>(customerDbContext);
                 }
                 return orderRepository;
             }
@@ -106,7 +124,7 @@ namespace ValidataTestWebApplication.DAL
 
         private Task<int> SaveChangesAsync() 
         {
-            return dbContext.SaveChangesAsync();
+            return customerDbContext.SaveChangesAsync();
         }
 
         #region IDiposable
@@ -118,7 +136,7 @@ namespace ValidataTestWebApplication.DAL
             {
                 if (disposing)
                 {
-                    dbContext.Dispose();
+                    customerDbContext.Dispose();
                 }
             }
             this.disposed = true;
