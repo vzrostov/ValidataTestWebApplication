@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
@@ -8,12 +9,7 @@ using ValidataTestWebApplication.Models;
 
 namespace ValidataTestWebApplication.DAL
 {
-    interface IDbContext
-    {
-
-    }
-
-    public class CustomerDbContext : DbContext, ICustomerDbContext, IDbContext
+    public class CustomerDbContext : DbContext, ICustomerDbContext
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }

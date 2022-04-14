@@ -12,11 +12,13 @@ using System.Text;
 using System.Threading.Tasks;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
+using ValidataUnitTestProject;
+using ValidataUnitTests.Helpers;
 
 namespace ValidataUnitTests
 {
     [TestFixture]
-    internal class GetCustomersTests
+    internal class GetCustomersTests : ValidataUnitTestBase
     {
         internal struct DesiredResult
         {
@@ -66,31 +68,32 @@ namespace ValidataUnitTests
                 yield return new TestCaseData("No any customers in DB test", new DesiredResult(0), 
                     new List<Customer> { }, null, null);
                 yield return new TestCaseData("Only one customer in DB test", new DesiredResult(1, 9, "Twains", 9, "Twains"), 
-                    TestsHelpers.GetOneTestCustomer(), null, null);
+                    TestsHelper.GetOneTestCustomer(), null, null);
                 yield return new TestCaseData("Many customers in DB test", new DesiredResult(3, 9, "Twains", 19, "Twain"), 
-                    TestsHelpers.GetTestCustomers(), null, null);
+                    TestsHelper.GetTestCustomers(), null, null);
                 yield return new TestCaseData("Many customers in DB test with ordering ASC", new DesiredResult(3, 10, "Parker", 9, "Twains"),
-                    TestsHelpers.GetTestCustomers(), null, OrderingMethodByLastName);
+                    TestsHelper.GetTestCustomers(), null, (Func<IQueryable<Customer>, IOrderedQueryable<Customer>>) OrderingMethodByLastName);
                 yield return new TestCaseData("Many customers in DB test with ordering DESC", new DesiredResult(3, 9, "Twains", 10, "Parker"),
-                    TestsHelpers.GetTestCustomers(), null, OrderingMethodByLastNameDescending);
+                    TestsHelper.GetTestCustomers(), null, (Func<IQueryable<Customer>, IOrderedQueryable<Customer>>) OrderingMethodByLastNameDescending);
                 yield return new TestCaseData("Many customers in DB test with ordering ASC and filtering", new DesiredResult(2, 19, "Twain", 9, "Twains"),
-                    TestsHelpers.GetTestCustomers(), FilterByFirstChar('T'), OrderingMethodByLastName);
+                    TestsHelper.GetTestCustomers(), FilterByFirstChar('T'), (Func<IQueryable<Customer>, IOrderedQueryable<Customer>>) OrderingMethodByLastName);
                 yield return new TestCaseData("Many customers in DB test with ordering DESC and filtering", new DesiredResult(2, 9, "Twains", 19, "Twain"),
-                    TestsHelpers.GetTestCustomers(), FilterByFirstChar('T'), OrderingMethodByLastNameDescending);
+                    TestsHelper.GetTestCustomers(), FilterByFirstChar('T'), (Func<IQueryable<Customer>, IOrderedQueryable<Customer>>) OrderingMethodByLastNameDescending);
             }
         }
 
         [TestCaseSource("GetAllTestCases")]
-        [Parallelizable(ParallelScope.All)]
+        //[Parallelizable(ParallelScope.All)]
         public void GetAllCustomersTest(string description, 
             DesiredResult result, 
             List<Customer> inCustomerList,
             Expression<Func<Customer, bool>> filter,
             Func<IQueryable<Customer>, IOrderedQueryable<Customer>> orderBy)
         {
-            Mock<ICustomerDbContext> mockContext = TestsHelpers.GetCustomerDbContextMock(inCustomerList.AsQueryable());
+            MockContext = MockCreateHelper.GetCustomerDbContextMock(inCustomerList.AsQueryable());
 
-            UnitOfWork unitOfWork = new UnitOfWork(mockContext.Object);
+            UnitOfWork unitOfWork = new UnitOfWork(MockContext.Object);
+
             var customers = unitOfWork.GetCustomers(filter, orderBy);
 
             List<Customer> customersList = customers.ToList();
@@ -108,21 +111,7 @@ namespace ValidataUnitTests
                     customersList.Last().LastName
                 ), description);
 
-
-            //unitOfWork.CreateCustomerAsync(new Customer("Margo", "Mount", "UK", "43990", new ReadOnlyCollection<Order>(new List<Order>())));
-
-            //var tc = unitOfWork.GetCustomerAsync(9).
-            //    ContinueWith(x =>
-            //    {
-            //        Assert.Equals(9, x.Result?.CustomerID ?? 0);
-            //        unitOfWork.DeleteCustomerAsync(x.Result).ContinueWith(x =>
-            //        {
-            //            //Assert.Equals(9, x.Result?.CustomerID ?? 0);
-            //            //Assert.Equals(9, x.Result.CustomerID);
-            //        });
-            //    });
-            //tc.Wait(); // if it wait continuing?
-
         }
+
     }
 }

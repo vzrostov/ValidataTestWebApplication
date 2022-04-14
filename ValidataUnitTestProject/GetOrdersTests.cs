@@ -10,10 +10,12 @@ using System.Text;
 using System.Threading.Tasks;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
+using ValidataUnitTestProject;
+using ValidataUnitTests.Helpers;
 
 namespace ValidataUnitTests
 {
-    internal class GetOrdersTests
+    internal class GetOrdersTests : ValidataUnitTestBase
     {
         internal struct DesiredResult
         {
@@ -54,7 +56,7 @@ namespace ValidataUnitTests
             {
                 yield return new TestCaseData("No any customer orders in DB test", new DesiredResult(0), 
                     9,
-                    TestsHelpers.GetTestCustomers(), 
+                    TestsHelper.GetTestCustomers(), 
                     new List<Order>(),
                     new List<Item>(),
                     null,
@@ -62,58 +64,57 @@ namespace ValidataUnitTests
                     );
                 yield return new TestCaseData("Many customer orders in DB test", new DesiredResult(3, 1, 3),
                     9,
-                    TestsHelpers.GetTestCustomers(),
-                    TestsHelpers.GetTestOrders(),
-                    TestsHelpers.GetTestItems(),
+                    TestsHelper.GetTestCustomers(),
+                    TestsHelper.GetTestOrders(),
+                    TestsHelper.GetTestItems(),
                     null,
                     null
                     );
                 yield return new TestCaseData("One customer order in DB test", new DesiredResult(1, 4, 4),
                     19,
-                    TestsHelpers.GetTestCustomers(),
-                    TestsHelpers.GetTestOrders(),
-                    TestsHelpers.GetTestItems(),
+                    TestsHelper.GetTestCustomers(),
+                    TestsHelper.GetTestOrders(),
+                    TestsHelper.GetTestItems(),
                     null,
                     null
                     );
                 yield return new TestCaseData("Many customer orders in DB test with ordering ASC", new DesiredResult(3, 2, 3),
                     9,
-                    TestsHelpers.GetTestCustomers(),
-                    TestsHelpers.GetTestOrders(),
-                    TestsHelpers.GetTestItems(),
+                    TestsHelper.GetTestCustomers(),
+                    TestsHelper.GetTestOrders(),
+                    TestsHelper.GetTestItems(),
                     null,
-                    OrderingMethodByDate
+                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingMethodByDate
                     );
                 yield return new TestCaseData("Many customer orders in DB test with ordering DESC", new DesiredResult(3, 3, 2),
                     9,
-                    TestsHelpers.GetTestCustomers(),
-                    TestsHelpers.GetTestOrders(),
-                    TestsHelpers.GetTestItems(),
+                    TestsHelper.GetTestCustomers(),
+                    TestsHelper.GetTestOrders(),
+                    TestsHelper.GetTestItems(),
                     null,
-                    OrderingMethodByDateDescending
+                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingMethodByDateDescending
                     );
                 yield return new TestCaseData("Many customer orders in DB test with ordering ASC and filtering", new DesiredResult(2, 2, 1),
                     9,
-                    TestsHelpers.GetTestCustomers(),
-                    TestsHelpers.GetTestOrders(),
-                    TestsHelpers.GetTestItems(),
-                    FilterByPrice(5, 9),
-                    OrderingMethodByDate
+                    TestsHelper.GetTestCustomers(),
+                    TestsHelper.GetTestOrders(),
+                    TestsHelper.GetTestItems(),
+                    FilterByPrice(5f, 9),
+                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingMethodByDate
                     );
                 yield return new TestCaseData("Many customer orders in DB test with ordering DESC and filtering", new DesiredResult(2, 1, 2),
                     9,
-                    TestsHelpers.GetTestCustomers(),
-                    TestsHelpers.GetTestOrders(),
-                    TestsHelpers.GetTestItems(),
-                    FilterByPrice(5, 9),
-                    OrderingMethodByDateDescending
+                    TestsHelper.GetTestCustomers(),
+                    TestsHelper.GetTestOrders(),
+                    TestsHelper.GetTestItems(),
+                    FilterByPrice(5f, 9),
+                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingMethodByDateDescending
                     );
             }
         }
 
         [TestCaseSource("GetAllTestCases")]
-        [Parallelizable(ParallelScope.All)]
-        public void GetAllOrdersOfCustomerTest2(string description, 
+        public void GetAllOrdersOfCustomerTest(string description, 
             DesiredResult result, 
             int customerId,
             List<Customer> customers, 
@@ -122,9 +123,9 @@ namespace ValidataUnitTests
             Expression<Func<Order, bool>> filter,
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy)
         {
-            Mock<ICustomerDbContext> mockContext = TestsHelpers.GetCustomerDbContextMock(customers.AsQueryable(), orders.AsQueryable(), items.AsQueryable());
+            MockContext = MockCreateHelper.GetCustomerDbContextMock(customers.AsQueryable(), orders.AsQueryable(), items.AsQueryable());
 
-            UnitOfWork unitOfWork = new UnitOfWork(mockContext.Object);
+            UnitOfWork unitOfWork = new UnitOfWork(MockContext.Object);
             Expression<Func<Order, bool>> expr = filter == null ? o => (o.CustomerID == customerId) : filter;
             var resultOrders = unitOfWork.GetOrders(expr, orderBy);
 
@@ -140,21 +141,6 @@ namespace ValidataUnitTests
                     ordersList.First().OrderId,
                     ordersList.Last().OrderId
                 ), description);
-
-
-            //unitOfWork.CreateOrderAsync(new Order("Margo", "Mount", "UK", "43990", new ReadOnlyCollection<Order>(new List<Order>())));
-
-            //var tc = unitOfWork.GetOrderAsync(9).
-            //    ContinueWith(x =>
-            //    {
-            //        Assert.Equals(9, x.Result?.OrderID ?? 0);
-            //        unitOfWork.DeleteOrderAsync(x.Result).ContinueWith(x =>
-            //        {
-            //            //Assert.Equals(9, x.Result?.OrderID ?? 0);
-            //            //Assert.Equals(9, x.Result.OrderID);
-            //        });
-            //    });
-            //tc.Wait(); // if it wait continuing?
 
         }
     }

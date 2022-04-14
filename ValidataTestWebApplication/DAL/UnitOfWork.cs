@@ -38,14 +38,9 @@ namespace ValidataTestWebApplication.DAL
             return CustomerRepository.GetAll(filter, orderBy, includeProperties);
         }
 
-        public Task<Customer> GetCustomerAsync(int id)
+        public Task<Customer> GetCustomerAsync(int id, string includeProperties = "")
         {
-            return CustomerRepository.GetAsync(id);
-        }
-
-        public Customer GetCustomer(int id)
-        {
-            return CustomerRepository.Get(id);
+            return CustomerRepository.GetAsync(id, includeProperties);
         }
 
         public Task<int> CreateCustomerAsync(Customer customer)
