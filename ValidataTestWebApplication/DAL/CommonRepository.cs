@@ -30,7 +30,6 @@ namespace ValidataTestWebApplication.DAL
         {
             _customerDbContext = _context;
             _dbSet = dbSet;
-            //_dbSet = _context.Context.Set<T>();
         }
 
         public IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null,
@@ -41,7 +40,6 @@ namespace ValidataTestWebApplication.DAL
 
             if (filter != null)
             {
-                //query = query.Where((c) => { return c.CustomerId == 19 });
                 query = query.Where(filter);
             }
 
@@ -53,7 +51,6 @@ namespace ValidataTestWebApplication.DAL
 
             if (orderBy != null)
             {
-                //return query.OrderBy((x => x.));
                 return orderBy(query);
             }
             else
@@ -62,14 +59,14 @@ namespace ValidataTestWebApplication.DAL
             }
         }
 
-        public Task<T> GetAsync(int id)
+        public Task<T> GetAsync(int id, string includeProperties = "")
         {
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                _dbSet.Include(includeProperty);
+            }
             return _dbSet.FindAsync(id);
-        }
-
-        public T Get(int id)
-        {
-            return _dbSet.Find(id);
         }
 
         public void Create(T obj)

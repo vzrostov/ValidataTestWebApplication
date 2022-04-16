@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,30 +8,35 @@ using System.Text;
 using System.Threading.Tasks;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
+using ValidataUnitTestProject;
+using ValidataUnitTests.Helpers;
 
 namespace ValidataUnitTests
 {
     [TestFixture]
-    internal class GetCustomerTests
+    internal class GetCustomerTests : ValidataUnitTestBase
     {
-        internal class DesiredResult
+        internal struct DesiredResult
         {
             public int id;
             public string firstName;
             public string lastName;
+            public int orderCount;
 
             public DesiredResult()
             {
                 this.id = 0;
                 this.firstName = string.Empty;
                 this.lastName = string.Empty;
+                this.orderCount = 0;
             }
 
-            public DesiredResult(int id, string firstName, string lastName)
+            public DesiredResult(int id, string firstName, string lastName, int orderCount)
             {
                 this.id = id;
                 this.firstName = firstName;
                 this.lastName = lastName;
+                this.orderCount = orderCount;
             }
         }
 
@@ -43,61 +49,54 @@ namespace ValidataUnitTests
         {
             get
             {
-                //yield return new TestCaseData("No any customers in DB test", 9, null, new List<Customer> { });
-                //yield return new TestCaseData("Only one customer in DB test", 9, new DesiredResult(1, "Twains", "Twains"), new List<Customer> { });
-                yield return new TestCaseData("Many customers in DB test", 9, new DesiredResult(9, "Twains", "Twain"), TestsHelpers.GetTestCustomers());
-                //yield return new TestCaseData("Many customers in DB test (we can't find)", 9, null, TestsHelpers.GetTestCustomers());
+                yield return new TestCaseData("Get customer from DB test", 9, new DesiredResult(9, "John", "Twains", 3), 
+                    TestsHelper.GetTestOrderedCustomers(), TestsHelper.GetTestOrders(), TestsHelper.GetTestItems());
+                yield return new TestCaseData("Get customer from DB with only one user test", 9, new DesiredResult(9, "John", "Twains", 3), 
+                    TestsHelper.GetOneTestOrderedCustomer(), TestsHelper.GetTestOrders(), TestsHelper.GetTestItems());
             }
         }
 
         [TestCaseSource("GetAllTestCases")]
-        [Parallelizable(ParallelScope.All)]
-        public void GetCustomerTest(string description, int idCustomer, DesiredResult result, List<Customer> inCustomerList)
+        public void GetCustomerTest(string description, int idCustomer, DesiredResult result, List<Customer> inCustomerList, List<Order> inOrderList, List<Item> inItemsList)
         {
-            GetCustomerTest2(description, idCustomer, result, inCustomerList);
+            // Arrange
+            MockContext = MockCreateHelper.GetAsyncCustomerDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
+            UnitOfWork unitOfWork = new UnitOfWork(MockContext?.Object);
+            // Act
+            var task = unitOfWork.GetCustomerAsync(idCustomer, "Orders").ContinueWith(x =>
+            {
+                // Assert
+                Assert.IsNotNull(x.Result, description);
+                Assert.AreEqual(
+                    result,
+                    new DesiredResult(
+                        x.Result.CustomerID,
+                        x.Result.FirstName,
+                        x.Result.LastName,
+                        x.Result.Orders?.Count ?? 0), 
+                    description);
+            });
+            task.Wait();
         }
 
-            public async void GetCustomerTest2(string description, int idCustomer, DesiredResult result, List<Customer> inCustomerList)
+        static IEnumerable<TestCaseData> GetAllWrongTestCases
         {
-            Mock<ICustomerDbContext> mockContext = TestsHelpers.GetAsyncCustomerDbContextMock(inCustomerList.AsQueryable());
+            get
+            {
+                yield return new TestCaseData(-8);
+                yield return new TestCaseData(3333);
+            }
+        }
 
-            UnitOfWork unitOfWork = new UnitOfWork(mockContext.Object);
-            //var tk = unitOfWork.GetCustomer(idCustomer);
-            var task = await unitOfWork.GetCustomerAsync(idCustomer);
-            //task.ContinueWith(x =>
-            //{
-            //    if (result == null) 
-            //    {
-            //        Assert.IsNull(x.Result);
-            //        return; // check further only if we have info
-            //    }
-            //    //Assert.IsNotNull(x.Result);
-            //    //Assert.AreEqual(
-            //    //    result,
-            //    //    new DesiredResult(
-            //    //        x.Result.CustomerID,
-            //    //        x.Result.FirstName,
-            //    //        x.Result.LastName
-            //    //        ),
-            //    //    description);
-            //}).
-            //Wait();
-
-            int o = 0;
-            //unitOfWork.CreateCustomerAsync(new Customer("Margo", "Mount", "UK", "43990", new ReadOnlyCollection<Order>(new List<Order>())));
-
-            //var tc = unitOfWork.GetCustomerAsync(9).
-            //    ContinueWith(x =>
-            //    {
-            //        Assert.Equals(9, x.Result?.CustomerID ?? 0);
-            //        unitOfWork.DeleteCustomerAsync(x.Result).ContinueWith(x =>
-            //        {
-            //            //Assert.Equals(9, x.Result?.CustomerID ?? 0);
-            //            //Assert.Equals(9, x.Result.CustomerID);
-            //        });
-            //    });
-            //tc.Wait(); // if it wait continuing?
-
+        [TestCaseSource("GetAllWrongTestCases")]
+        public void GetNotExistingCustomerTest(int idCustomer)
+        {
+            // Arrange
+            MockContext = MockCreateHelper.GetAsyncCustomerDbContextMock(TestsHelper.GetTestCustomers().AsQueryable(), TestsHelper.GetTestOrders().AsQueryable(), TestsHelper.GetTestItems().AsQueryable());
+            UnitOfWork unitOfWork = new UnitOfWork(MockContext?.Object);
+            // Act 
+            // Assert
+            Assert.Throws<InvalidOperationException>(() => unitOfWork.GetCustomerAsync(idCustomer), "Get not existing customer from DB test");
         }
     }
 }

@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
+using ValidataUnitTestProject;
+using ValidataUnitTests.Helpers;
 
 namespace ValidataUnitTests
 {
     [TestFixture]
-    internal class CreateCustomerTests
+    internal class CreateCustomerTests : ValidataUnitTestBase
     {
 
         [SetUp]
@@ -19,29 +21,28 @@ namespace ValidataUnitTests
         {
         }
 
-        static IEnumerable<TestCaseData> GetAllTestCasesCC
+        static IEnumerable<TestCaseData> GetAllTestCases
         {
             get
             {
-                yield return new TestCaseData("Create customer in DB test", TestsHelpers.GetTestCustomers());
+                yield return new TestCaseData("Create customer in DB test", TestsHelper.GetTestCustomers(), TestsHelper.GetTestOrders(), TestsHelper.GetTestItems());
             }
         }
 
-        [TestCaseSource("GetAllTestCasesCC")]
-        [Parallelizable(ParallelScope.All)]
-        public void CreateCustomerTest(string description, List<Customer> inCustomerList)
+        [TestCaseSource("GetAllTestCases")]
+        public void CreateCustomerTest(string description, List<Customer> inCustomerList, List<Order> inOrderList, List<Item> inItemsList)
         {
+            // Arrange
             int prevCount = inCustomerList.Count;
-            Mock<ICustomerDbContext> mockContext = TestsHelpers.GetAsyncCustomerDbContextMock(inCustomerList.AsQueryable());
-
-            UnitOfWork unitOfWork = new UnitOfWork(mockContext.Object);
-            var task = unitOfWork.CreateCustomerAsync(new Customer("Johnny", "Depp", "USA", "413990", null));
-            //task.Start();
-            task.ContinueWith(t =>
+            MockContext = MockCreateHelper.GetAsyncCustomerDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
+            UnitOfWork = new UnitOfWork(MockContext?.Object);
+            // Act
+            var task = UnitOfWork?.CreateCustomerAsync(new Customer("Johnny", "Depp", "USA", "413990", null));
+            task?.ContinueWith(t =>
             {
-                //Assert.True(task.Result > 0, description);
+                // Assert
                 // reread all to check new size
-                var curCount = unitOfWork.GetCustomers().Count();
+                var curCount = UnitOfWork?.GetCustomers().Count();
                 Assert.AreEqual(prevCount + 1, curCount, description);
             }
             );

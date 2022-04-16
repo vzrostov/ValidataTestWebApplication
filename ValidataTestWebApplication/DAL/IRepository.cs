@@ -12,7 +12,7 @@ namespace ValidataTestWebApplication.DAL
         IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "");
-        Task<T> GetAsync(int id);
+        Task<T> GetAsync(int id, string includeProperties = "");
         void Create(T item);
         void Update(T item);
         void Delete(T item);
