@@ -24,6 +24,10 @@ namespace ValidataUnitTests.Helpers
             {
                 return data.First(x => x.CustomerID == id);
             });
+            mockCustomerSet.Setup(x => x.Include(It.IsAny<string>())).Returns((string path) =>
+            {
+                return mockCustomerSet.Object;
+            });
 
             var mockOrderSet = new Mock<DbSet<Order>>();
             // order and items sets are excess sometimes
@@ -79,6 +83,10 @@ namespace ValidataUnitTests.Helpers
             mockCustomerSet.Setup(x => x.FindAsync(It.IsAny<object[]>())).ReturnsAsync((object[] ids) =>
             {
                 return data.First(x => x.CustomerID == (int)ids[0]);
+            });
+            mockCustomerSet.Setup(x => x.Include(It.IsAny<string>())).Returns((string path) =>
+            {
+                return mockCustomerSet.Object;
             });
 
             // order

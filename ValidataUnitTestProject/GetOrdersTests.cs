@@ -123,12 +123,13 @@ namespace ValidataUnitTests
             Expression<Func<Order, bool>> filter,
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy)
         {
+            // Arrange
             MockContext = MockCreateHelper.GetCustomerDbContextMock(customers.AsQueryable(), orders.AsQueryable(), items.AsQueryable());
-
             UnitOfWork unitOfWork = new UnitOfWork(MockContext.Object);
             Expression<Func<Order, bool>> expr = filter == null ? o => (o.CustomerID == customerId) : filter;
+            // Act
             var resultOrders = unitOfWork.GetOrders(expr, orderBy);
-
+            // Assert
             List<Order> ordersList = resultOrders.ToList();
             Assert.IsNotNull(ordersList, description);
             Assert.AreEqual(result.totalCount, ordersList.Count(), description);

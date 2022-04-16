@@ -32,14 +32,15 @@ namespace ValidataUnitTests
         [TestCaseSource("GetAllTestCases")]
         public void CreateCustomerTest(string description, List<Customer> inCustomerList, List<Order> inOrderList, List<Item> inItemsList)
         {
+            // Arrange
             int prevCount = inCustomerList.Count;
             MockContext = MockCreateHelper.GetAsyncCustomerDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
             UnitOfWork = new UnitOfWork(MockContext?.Object);
-
+            // Act
             var task = UnitOfWork?.CreateCustomerAsync(new Customer("Johnny", "Depp", "USA", "413990", null));
             task?.ContinueWith(t =>
             {
-                //Assert.True(task.Result > 0, description);
+                // Assert
                 // reread all to check new size
                 var curCount = UnitOfWork?.GetCustomers().Count();
                 Assert.AreEqual(prevCount + 1, curCount, description);

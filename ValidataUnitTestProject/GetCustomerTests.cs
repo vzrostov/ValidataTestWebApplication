@@ -50,20 +50,22 @@ namespace ValidataUnitTests
             get
             {
                 yield return new TestCaseData("Get customer from DB test", 9, new DesiredResult(9, "John", "Twains", 3), 
-                    TestsHelper.GetTestCustomers(), TestsHelper.GetTestOrders(), TestsHelper.GetTestItems());
+                    TestsHelper.GetTestOrderedCustomers(), TestsHelper.GetTestOrders(), TestsHelper.GetTestItems());
                 yield return new TestCaseData("Get customer from DB with only one user test", 9, new DesiredResult(9, "John", "Twains", 3), 
-                    TestsHelper.GetOneTestCustomer(), TestsHelper.GetTestOrders(), TestsHelper.GetTestItems());
+                    TestsHelper.GetOneTestOrderedCustomer(), TestsHelper.GetTestOrders(), TestsHelper.GetTestItems());
             }
         }
 
         [TestCaseSource("GetAllTestCases")]
         public void GetCustomerTest(string description, int idCustomer, DesiredResult result, List<Customer> inCustomerList, List<Order> inOrderList, List<Item> inItemsList)
         {
+            // Arrange
             MockContext = MockCreateHelper.GetAsyncCustomerDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
-
             UnitOfWork unitOfWork = new UnitOfWork(MockContext?.Object);
+            // Act
             var task = unitOfWork.GetCustomerAsync(idCustomer, "Orders").ContinueWith(x =>
             {
+                // Assert
                 Assert.IsNotNull(x.Result, description);
                 Assert.AreEqual(
                     result,
@@ -89,9 +91,11 @@ namespace ValidataUnitTests
         [TestCaseSource("GetAllWrongTestCases")]
         public void GetNotExistingCustomerTest(int idCustomer)
         {
+            // Arrange
             MockContext = MockCreateHelper.GetAsyncCustomerDbContextMock(TestsHelper.GetTestCustomers().AsQueryable(), TestsHelper.GetTestOrders().AsQueryable(), TestsHelper.GetTestItems().AsQueryable());
             UnitOfWork unitOfWork = new UnitOfWork(MockContext?.Object);
-
+            // Act 
+            // Assert
             Assert.Throws<InvalidOperationException>(() => unitOfWork.GetCustomerAsync(idCustomer), "Get not existing customer from DB test");
         }
     }

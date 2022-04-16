@@ -83,19 +83,18 @@ namespace ValidataUnitTests
         }
 
         [TestCaseSource("GetAllTestCases")]
-        //[Parallelizable(ParallelScope.All)]
         public void GetAllCustomersTest(string description, 
             DesiredResult result, 
             List<Customer> inCustomerList,
             Expression<Func<Customer, bool>> filter,
             Func<IQueryable<Customer>, IOrderedQueryable<Customer>> orderBy)
         {
+            // Arrange
             MockContext = MockCreateHelper.GetCustomerDbContextMock(inCustomerList.AsQueryable());
-
             UnitOfWork unitOfWork = new UnitOfWork(MockContext.Object);
-
+            // Act
             var customers = unitOfWork.GetCustomers(filter, orderBy);
-
+            // Assert
             List<Customer> customersList = customers.ToList();
             Assert.IsNotNull(customersList, description);
             Assert.AreEqual(result.totalCount, customersList.Count(), description);

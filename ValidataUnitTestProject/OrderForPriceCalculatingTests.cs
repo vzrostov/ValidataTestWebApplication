@@ -86,7 +86,9 @@ namespace ValidataUnitTests
         [Parallelizable(ParallelScope.All)]
         public void OrderForPriceCalculatingTest(float result, Order order)
         {
+            // Act
             order.Recalculate();
+            // Assert
             Assert.AreEqual(result, order.Price);
             Assert.Pass();
         }

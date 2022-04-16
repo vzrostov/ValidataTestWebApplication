@@ -6,7 +6,6 @@ namespace ValidataUnitTestProject
 {
     public class ValidataUnitTestBase
     {
-
         protected Mock<ICustomerDbContext>? MockContext { get; set; }
         protected UnitOfWork? UnitOfWork { get; set; }
 
