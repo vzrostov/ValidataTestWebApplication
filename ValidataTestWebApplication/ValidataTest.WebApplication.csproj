@@ -135,7 +135,6 @@
     <Compile Include="DAL\CommonRepository.cs" />
     <Compile Include="DAL\CustomerRepository.cs" />
     <Compile Include="DAL\ICustomerDbContext.cs" />
-    <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\CustomerDbContext.cs" />
     <Compile Include="DAL.Internal\InternalUnitOfWork.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
@@ -175,10 +174,6 @@
       <DependentUpon>202204082202168_m62.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\Item.cs" />
-    <Compile Include="Models\Order.cs" />
-    <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -281,6 +276,12 @@
     <EmbeddedResource Include="Migrations\202204082202168_m62.resx">
       <DependentUpon>202204082202168_m62.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ValidataTest.Core\ValidataTest.Core.csproj">
+      <Project>{0E10B0C2-4045-4FDA-96A9-CC865D5AC2E0}</Project>
+      <Name>ValidataTest.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

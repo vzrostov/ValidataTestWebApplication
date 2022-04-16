@@ -7,7 +7,7 @@ using System.Web;
 
 namespace ValidataTestWebApplication.DAL
 {
-    interface IRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
