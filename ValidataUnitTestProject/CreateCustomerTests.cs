@@ -34,11 +34,10 @@ namespace ValidataUnitTests
         {
             // Arrange
             int prevCount = inCustomerList.Count;
-            MockContext = MockCreateHelper.GetAsyncCustomerDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
+            MockContext = MockCreateHelper.GetAsyncDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
             UnitOfWork = new UnitOfWork(MockContext?.Object);
             // Act
-            var task = UnitOfWork?.CreateCustomerAsync(new Customer("Johnny", "Depp", "USA", "413990", null));
-            task?.ContinueWith(t =>
+            var task = UnitOfWork?.CreateCustomerAsync(new Customer("Johnny", "Depp", "USA", "413990", null)).ContinueWith(t =>
             {
                 // Assert
                 // reread all to check new size
@@ -46,6 +45,7 @@ namespace ValidataUnitTests
                 Assert.AreEqual(prevCount + 1, curCount, description);
             }
             );
+            task?.Wait();
         }
     }
 }

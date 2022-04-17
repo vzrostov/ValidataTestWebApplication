@@ -90,7 +90,6 @@ namespace ValidataUnitTests
             order.Recalculate();
             // Assert
             Assert.AreEqual(result, order.Price);
-            Assert.Pass();
         }
 
         [TearDown]

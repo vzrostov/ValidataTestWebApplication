@@ -34,8 +34,8 @@ namespace ValidataUnitTests
             };
         }
 
-        internal static List<Customer> GetOneTestCustomer() => new List<Customer> { GetTestCustomers().First() };
-        internal static List<Customer> GetOneTestOrderedCustomer() => new List<Customer> { GetTestOrderedCustomers().First() };
+        internal static List<Customer> GetOneTestCustomers() => new List<Customer> { GetTestCustomers().First() };
+        internal static List<Customer> GetOneTestOrderedCustomers() => new List<Customer> { GetTestOrderedCustomers().First() };
 
         internal static List<Order> GetTestOrders()
         {
