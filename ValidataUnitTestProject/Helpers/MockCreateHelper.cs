@@ -30,20 +30,57 @@ namespace ValidataUnitTests.Helpers
                 AssignDataInMockSet(mockCustomerSet, datanew);
                 return c;
             });
+            mockCustomerSet.Setup(x => x.Attach(It.IsAny<Customer>())).Returns((Customer c) =>
+            {
+                int countBefore = data.Count();
+                data.ToList().ForEach(x => x.FirstName = (x.CustomerID == c.CustomerID) ? c.FirstName : x.FirstName);
+                data.ToList().ForEach(x => x.LastName = (x.CustomerID == c.CustomerID) ? c.LastName : x.LastName);
+                AssignDataInMockSet(mockCustomerSet, data.AsQueryable());
+                return c;
+            });
             mockCustomerSet.Setup(x => x.Remove(It.IsAny<Customer>())).Returns((Customer c) =>
             {
                 var datanew = data.Where(x => x.CustomerID != c.CustomerID);
                 AssignDataInMockSet(mockCustomerSet, datanew);
                 return c;
             });
+
             // order
             var mockOrderSet = new Mock<DbSet<Order>>();
             // order and items sets are excess sometimes
             if (dataOrder != null)
             {
                 AssignDataInMockSet(mockOrderSet, dataOrder);
+                mockOrderSet.Setup(x => x.FindAsync(It.IsAny<object[]>())).ReturnsAsync((object[] ids) =>
+                {
+                    return dataOrder.First(x => x.OrderId == (int)ids[0]);
+                });
+                mockOrderSet.Setup(x => x.Include(It.IsAny<string>())).Returns((string path) =>
+                {
+                    return mockOrderSet.Object;
+                });
+                mockOrderSet.Setup(x => x.Add(It.IsAny<Order>())).Returns((Order c) =>
+                {
+                    var datanew = dataOrder.Append(c);
+                    AssignDataInMockSet(mockOrderSet, datanew);
+                    return c;
+                });
+                mockOrderSet.Setup(x => x.Attach(It.IsAny<Order>())).Returns((Order c) =>
+                {
+                    int countBefore = dataOrder.Count();
+                    dataOrder.ToList().ForEach(x => x.Date = (x.OrderId == c.OrderId) ? c.Date : x.Date);
+                    AssignDataInMockSet(mockOrderSet, dataOrder.AsQueryable());
+                    return c;
+                });
+                mockOrderSet.Setup(x => x.Remove(It.IsAny<Order>())).Returns((Order c) =>
+                {
+                    var datanew = dataOrder.Where(x => x.CustomerID != c.CustomerID);
+                    AssignDataInMockSet(mockOrderSet, datanew);
+                    return c;
+                });
             }
 
+            // item
             var mockItemSet = new Mock<DbSet<Item>>();
             // order and items sets are excess sometimes
             if (dataItem != null)
@@ -51,6 +88,7 @@ namespace ValidataUnitTests.Helpers
                 AssignDataInMockSet(mockItemSet, dataItem);
             }
 
+            // DbContext
             var mockDbContext = new Mock<DbContext>();
             mockDbContext.Setup(m => m.Set<Customer>()).Returns(mockCustomerSet.Object);
             if (dataOrder != null)
@@ -59,6 +97,11 @@ namespace ValidataUnitTests.Helpers
                 mockDbContext.Setup(m => m.Set<Item>()).Returns(mockItemSet.Object);
 
             var mockContext = new Mock<ICustomerDbContext>();
+            mockContext.Setup(m => m.SaveChangesAsync()).ReturnsAsync(() =>
+            {
+                return 0;
+            });
+            
             mockContext.Setup(m => m.Customers).Returns(mockCustomerSet.Object);
             if (dataOrder != null)
                 mockContext.Setup(m => m.Orders).Returns(mockOrderSet.Object);

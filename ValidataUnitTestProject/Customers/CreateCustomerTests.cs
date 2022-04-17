@@ -15,6 +15,26 @@ namespace ValidataUnitTests
     [TestFixture]
     internal class CreateCustomerTests : ValidataUnitTestBase
     {
+        internal struct DesiredResult
+        {
+            public int id;
+            public string firstName;
+            public string lastName;
+
+            public DesiredResult()
+            {
+                this.id = 0;
+                this.firstName = string.Empty;
+                this.lastName = string.Empty;
+            }
+
+            public DesiredResult(int id, string firstName, string lastName)
+            {
+                this.id = id;
+                this.firstName = firstName;
+                this.lastName = lastName;
+            }
+        }
 
         [SetUp]
         public void Setup()
@@ -36,10 +56,12 @@ namespace ValidataUnitTests
             int prevCount = inCustomerList.Count;
             MockContext = MockCreateHelper.GetAsyncDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
             UnitOfWork = new UnitOfWork(MockContext?.Object);
+            var customer = new Customer("Johnny", "Depp", "USA", "413990", null) { CustomerID = 55 };
             // Act
-            var task = UnitOfWork?.CreateCustomerAsync(new Customer("Johnny", "Depp", "USA", "413990", null)).ContinueWith(t =>
+            var task = UnitOfWork?.CreateCustomerAsync(customer).ContinueWith(t =>
             {
                 // Assert
+                Assert.IsNotNull(t.Result, description);
                 // reread all to check new size
                 var curCount = UnitOfWork?.GetCustomers().Count();
                 Assert.AreEqual(prevCount + 1, curCount, description);

@@ -16,6 +16,7 @@ namespace ValidataTestWebApplication.DAL
         private ICustomerDbContext customerDbContext;
         private CommonRepository<Customer> customerRepository;
         private CommonRepository<Order> orderRepository;
+        private bool IsForTesting { get; set; } = false;
 
         public UnitOfWork()
         {
@@ -29,6 +30,7 @@ namespace ValidataTestWebApplication.DAL
         public UnitOfWork(ICustomerDbContext dbcontext)
         {
             customerDbContext = dbcontext;
+            IsForTesting = true;
         }
 
         public IQueryable<Customer> GetCustomers(Expression<Func<Customer, bool>> filter = null,
@@ -68,9 +70,9 @@ namespace ValidataTestWebApplication.DAL
             return OrderRepository.GetAll(filter, orderBy, includeProperties);
         }
 
-        public Task<Order> GetOrderAsync(int id)
+        public Task<Order> GetOrderAsync(int id, string includeProperties = "")
         {
-            return OrderRepository.GetAsync(id);
+            return OrderRepository.GetAsync(id, includeProperties);
         }
 
         public Task<int> CreateOrderAsync(Order order)
