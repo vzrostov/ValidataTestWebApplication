@@ -2,15 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
-using ValidataUnitTestProject;
 using ValidataUnitTests;
 using ValidataUnitTests.Helpers;
 
-namespace ValidataTests.UnitTests.Orders
+namespace ValidataTests.UnitTests
 {
     [TestFixture]
     internal class GetOrderTests : ValidataUnitTestBase

@@ -5,11 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
-using ValidataUnitTestProject;
+using ValidataUnitTests;
 using ValidataUnitTests.Helpers;
 
-namespace ValidataUnitTests
+namespace ValidataTests.UnitTests
 {
+    [TestFixture]
     internal class GetOrdersTests : ValidataUnitTestBase
     {
         internal struct DesiredResult

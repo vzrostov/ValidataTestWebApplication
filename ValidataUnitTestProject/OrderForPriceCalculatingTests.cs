@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ValidataTestWebApplication.Models;
 
-namespace ValidataUnitTests
+namespace ValidataTests.UnitTests
 {
     [TestFixture]
     public class OrderForPriceCalculatingTests
