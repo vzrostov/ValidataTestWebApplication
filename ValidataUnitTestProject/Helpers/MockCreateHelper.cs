@@ -32,7 +32,6 @@ namespace ValidataUnitTests.Helpers
             });
             mockCustomerSet.Setup(x => x.Attach(It.IsAny<Customer>())).Returns((Customer c) =>
             {
-                int countBefore = data.Count();
                 data.ToList().ForEach(x => x.FirstName = (x.CustomerID == c.CustomerID) ? c.FirstName : x.FirstName);
                 data.ToList().ForEach(x => x.LastName = (x.CustomerID == c.CustomerID) ? c.LastName : x.LastName);
                 AssignDataInMockSet(mockCustomerSet, data.AsQueryable());
@@ -67,14 +66,13 @@ namespace ValidataUnitTests.Helpers
                 });
                 mockOrderSet.Setup(x => x.Attach(It.IsAny<Order>())).Returns((Order c) =>
                 {
-                    int countBefore = dataOrder.Count();
                     dataOrder.ToList().ForEach(x => x.Date = (x.OrderId == c.OrderId) ? c.Date : x.Date);
                     AssignDataInMockSet(mockOrderSet, dataOrder.AsQueryable());
                     return c;
                 });
                 mockOrderSet.Setup(x => x.Remove(It.IsAny<Order>())).Returns((Order c) =>
                 {
-                    var datanew = dataOrder.Where(x => x.CustomerID != c.CustomerID);
+                    var datanew = dataOrder.Where(x => x.OrderId != c.OrderId);
                     AssignDataInMockSet(mockOrderSet, datanew);
                     return c;
                 });

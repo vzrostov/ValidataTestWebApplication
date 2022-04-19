@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 using ValidataTestWebApplication.Models;
 
 namespace ValidataTestWebApplication.DAL
@@ -20,6 +14,9 @@ namespace ValidataTestWebApplication.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<Order>().(i => i.Customer)
+            //    .WithMany(c => c.Invoices)
+            //    .OnDelete(DeleteBehavior.ClientCascade);
         }
 
     }
