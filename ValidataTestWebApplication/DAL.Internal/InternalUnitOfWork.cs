@@ -8,7 +8,7 @@ using ValidataTestWebApplication.Models;
 namespace ValidataTestWebApplication.DAL
 {
     /// <summary>
-    /// Provides API for inner using (to manipulate DB directly, to CRUD data manually as a separate rows)
+    /// Provides API for inner using (to manipulate DB directly for admin (non public API), to CRUD data manually as a separate rows)
     /// </summary>
     internal class InternalUnitOfWork : IDisposable
     {
