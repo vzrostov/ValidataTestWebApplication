@@ -14,9 +14,14 @@ namespace ValidataTestWebApplication.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Order>().(i => i.Customer)
-            //    .WithMany(c => c.Invoices)
-            //    .OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Customer>()
+                .HasMany(c => c.Orders)
+                .WithRequired(o => o.Customer)
+                .WillCascadeOnDelete(true);
+            modelBuilder.Entity<Order>()
+                .HasMany(c => c.Items)
+                .WithRequired(o => o.Order)
+                .WillCascadeOnDelete(true);
         }
 
     }
