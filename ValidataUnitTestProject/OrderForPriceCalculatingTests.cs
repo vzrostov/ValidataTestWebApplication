@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ValidataTestWebApplication.Models;
 
-namespace ValidataUnitTests
+namespace ValidataTests.UnitTests
 {
     [TestFixture]
     public class OrderForPriceCalculatingTests
@@ -90,7 +90,6 @@ namespace ValidataUnitTests
             order.Recalculate();
             // Assert
             Assert.AreEqual(result, order.Price);
-            Assert.Pass();
         }
 
         [TearDown]

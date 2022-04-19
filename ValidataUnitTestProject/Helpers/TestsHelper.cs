@@ -14,7 +14,8 @@ namespace ValidataUnitTests
                 new Customer("John", "Twains", "USA", "43990",
                     new List<Order>
                     {
-                        new Order(new DateTime(2022, 04, 12, 2, 0, 0), price: 10f, customerID: 9, null, null) { OrderId = 1 },
+                        new Order(new DateTime(2022, 04, 12, 2, 0, 0), price: 10f, customerID: 9, null, 
+                            GetTestItems().Where(i => i.OrderID == 1).ToList()) { OrderId = 1 },
                         new Order(new DateTime(2022, 04, 12, 1, 0, 0), price: 20f, customerID: 9, null, null) { OrderId = 2 },
                         new Order(new DateTime(2022, 04, 12, 3, 0, 0), price: 2f, customerID: 9, null, null) { OrderId = 3 }
                     }
@@ -34,8 +35,8 @@ namespace ValidataUnitTests
             };
         }
 
-        internal static List<Customer> GetOneTestCustomer() => new List<Customer> { GetTestCustomers().First() };
-        internal static List<Customer> GetOneTestOrderedCustomer() => new List<Customer> { GetTestOrderedCustomers().First() };
+        internal static List<Customer> GetOneTestCustomers() => new List<Customer> { GetTestCustomers().First() };
+        internal static List<Customer> GetOneTestOrderedCustomers() => new List<Customer> { GetTestOrderedCustomers().First() };
 
         internal static List<Order> GetTestOrders()
         {
@@ -53,9 +54,9 @@ namespace ValidataUnitTests
             return new List<Item>
             {
                 new Item(quantity: 1.5f, productID: 1, null, orderID: 1, null) { ItemId = 1 },
-                new Item(quantity: 10f, productID: 2, null, orderID: 2, null) { ItemId = 2 },
-                new Item(quantity: 1f, productID: 3, null, orderID: 3, null) { ItemId = 3 },
-                new Item(quantity: 1f, productID: 3, null, orderID: 4, null) { ItemId = 4 }
+                new Item(quantity: 10f, productID: 2, null, orderID: 1, null) { ItemId = 2 },
+                new Item(quantity: 1f, productID: 3, null, orderID: 1, null) { ItemId = 3 },
+                new Item(quantity: 1f, productID: 3, null, orderID: 3, null) { ItemId = 4 }
             };
         }
     }

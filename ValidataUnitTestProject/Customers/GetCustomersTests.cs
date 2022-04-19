@@ -1,21 +1,15 @@
 ﻿//using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
-using ValidataUnitTestProject;
+using ValidataUnitTests;
 using ValidataUnitTests.Helpers;
 
-namespace ValidataUnitTests
+namespace ValidataTests.UnitTests
 {
     [TestFixture]
     internal class GetCustomersTests : ValidataUnitTestBase
@@ -67,8 +61,10 @@ namespace ValidataUnitTests
             {
                 yield return new TestCaseData("No any customers in DB test", new DesiredResult(0), 
                     new List<Customer> { }, null, null);
+                yield return new TestCaseData("No any customers in DB test after filtering", new DesiredResult(0),
+                    TestsHelper.GetTestCustomers(), FilterByFirstChar('X'), null);
                 yield return new TestCaseData("Only one customer in DB test", new DesiredResult(1, 9, "Twains", 9, "Twains"), 
-                    TestsHelper.GetOneTestCustomer(), null, null);
+                    TestsHelper.GetOneTestCustomers(), null, null);
                 yield return new TestCaseData("Many customers in DB test", new DesiredResult(3, 9, "Twains", 19, "Twain"), 
                     TestsHelper.GetTestCustomers(), null, null);
                 yield return new TestCaseData("Many customers in DB test with ordering ASC", new DesiredResult(3, 10, "Parker", 9, "Twains"),
@@ -90,12 +86,15 @@ namespace ValidataUnitTests
             Func<IQueryable<Customer>, IOrderedQueryable<Customer>> orderBy)
         {
             // Arrange
-            MockContext = MockCreateHelper.GetCustomerDbContextMock(inCustomerList.AsQueryable());
-            UnitOfWork unitOfWork = new UnitOfWork(MockContext.Object);
+            MockContext = MockCreateHelper.GetAsyncDbContextMock(inCustomerList.AsQueryable());
+            UnitOfWork = new UnitOfWork(MockContext.Object);
             // Act
-            var customers = unitOfWork.GetCustomers(filter, orderBy);
+            var customers = UnitOfWork?.GetCustomers(filter, orderBy);
             // Assert
+            Assert.IsNotNull(customers, description);
+#pragma warning disable CS8604 // Possible null reference argument.
             List<Customer> customersList = customers.ToList();
+#pragma warning restore CS8604 // Possible null reference argument.
             Assert.IsNotNull(customersList, description);
             Assert.AreEqual(result.totalCount, customersList.Count(), description);
             if (result.totalCount == 0) // check only if we have info

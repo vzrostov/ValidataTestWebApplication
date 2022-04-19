@@ -77,15 +77,15 @@ namespace ValidataTestWebApplication.DAL
         public void Update(T obj)
         {
             _dbSet.Attach(obj);
-            _customerDbContext.DBContext.Entry(obj).State = EntityState.Modified;
+            //_customerDbContext.DBContext.Entry(obj).State = EntityState.Modified;
         }
 
         public void Delete(T obj)
         {
-            if (_customerDbContext.DBContext.Entry(obj).State == EntityState.Detached)
-            {
-                _dbSet.Attach(obj);
-            }
+            //if (_customerDbContext.DBContext.Entry(obj).State == EntityState.Detached)
+            //{
+            //    _dbSet.Attach(obj);
+            //}
             _dbSet.Remove(obj);
         }
     }

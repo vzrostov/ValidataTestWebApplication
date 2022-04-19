@@ -7,14 +7,34 @@ using System.Text;
 using System.Threading.Tasks;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
-using ValidataUnitTestProject;
+using ValidataUnitTests;
 using ValidataUnitTests.Helpers;
 
-namespace ValidataUnitTests
+namespace ValidataTests.UnitTests
 {
     [TestFixture]
     internal class CreateCustomerTests : ValidataUnitTestBase
     {
+        internal struct DesiredResult
+        {
+            public int id;
+            public string firstName;
+            public string lastName;
+
+            public DesiredResult()
+            {
+                this.id = 0;
+                this.firstName = string.Empty;
+                this.lastName = string.Empty;
+            }
+
+            public DesiredResult(int id, string firstName, string lastName)
+            {
+                this.id = id;
+                this.firstName = firstName;
+                this.lastName = lastName;
+            }
+        }
 
         [SetUp]
         public void Setup()
@@ -34,18 +54,20 @@ namespace ValidataUnitTests
         {
             // Arrange
             int prevCount = inCustomerList.Count;
-            MockContext = MockCreateHelper.GetAsyncCustomerDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
+            MockContext = MockCreateHelper.GetAsyncDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
             UnitOfWork = new UnitOfWork(MockContext?.Object);
+            var customer = new Customer("Johnny", "Depp", "USA", "413990", null) { CustomerID = 55 };
             // Act
-            var task = UnitOfWork?.CreateCustomerAsync(new Customer("Johnny", "Depp", "USA", "413990", null));
-            task?.ContinueWith(t =>
+            var task = UnitOfWork?.CreateCustomerAsync(customer).ContinueWith(t =>
             {
                 // Assert
+                Assert.IsNotNull(t.Result, description);
                 // reread all to check new size
                 var curCount = UnitOfWork?.GetCustomers().Count();
                 Assert.AreEqual(prevCount + 1, curCount, description);
             }
             );
+            task?.Wait();
         }
     }
 }

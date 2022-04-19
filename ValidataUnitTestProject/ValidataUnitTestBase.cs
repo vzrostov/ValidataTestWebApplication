@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using ValidataTestWebApplication.DAL;
 
-namespace ValidataUnitTestProject
+namespace ValidataTests.UnitTests
 {
     public class ValidataUnitTestBase
     {

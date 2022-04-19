@@ -1,20 +1,16 @@
-﻿using Moq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
-using ValidataUnitTestProject;
+using ValidataUnitTests;
 using ValidataUnitTests.Helpers;
 
-namespace ValidataUnitTests
+namespace ValidataTests.UnitTests
 {
+    [TestFixture]
     internal class GetOrdersTests : ValidataUnitTestBase
     {
         internal struct DesiredResult
@@ -124,13 +120,16 @@ namespace ValidataUnitTests
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy)
         {
             // Arrange
-            MockContext = MockCreateHelper.GetCustomerDbContextMock(customers.AsQueryable(), orders.AsQueryable(), items.AsQueryable());
-            UnitOfWork unitOfWork = new UnitOfWork(MockContext.Object);
+            MockContext = MockCreateHelper.GetAsyncDbContextMock(customers.AsQueryable(), orders.AsQueryable(), items.AsQueryable());
+            UnitOfWork = new UnitOfWork(MockContext.Object);
             Expression<Func<Order, bool>> expr = filter == null ? o => (o.CustomerID == customerId) : filter;
             // Act
-            var resultOrders = unitOfWork.GetOrders(expr, orderBy);
+            var resultOrders = UnitOfWork?.GetOrders(expr, orderBy);
             // Assert
+            Assert.IsNotNull(resultOrders, description);
+#pragma warning disable CS8604 // Possible null reference argument.
             List<Order> ordersList = resultOrders.ToList();
+#pragma warning restore CS8604 // Possible null reference argument.
             Assert.IsNotNull(ordersList, description);
             Assert.AreEqual(result.totalCount, ordersList.Count(), description);
             if (result.totalCount == 0) // check only if we have info
@@ -142,7 +141,6 @@ namespace ValidataUnitTests
                     ordersList.First().OrderId,
                     ordersList.Last().OrderId
                 ), description);
-
         }
     }
 }

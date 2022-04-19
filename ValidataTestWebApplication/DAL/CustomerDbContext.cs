@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 using ValidataTestWebApplication.Models;
 
 namespace ValidataTestWebApplication.DAL
@@ -20,6 +14,14 @@ namespace ValidataTestWebApplication.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Customer>()
+                .HasMany(c => c.Orders)
+                .WithRequired(o => o.Customer)
+                .WillCascadeOnDelete(true);
+            modelBuilder.Entity<Order>()
+                .HasMany(c => c.Items)
+                .WithRequired(o => o.Order)
+                .WillCascadeOnDelete(true);
         }
 
     }
