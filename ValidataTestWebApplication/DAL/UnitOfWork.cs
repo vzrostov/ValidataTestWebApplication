@@ -18,6 +18,10 @@ namespace ValidataTestWebApplication.DAL
         private CommonRepository<Order> orderRepository;
         private bool IsForTesting { get; set; } = false;
 
+        /// <summary>
+        /// Constructor for creating Unit of Work with Data Source to manipulate customers and their orders
+        /// </summary>
+        /// <example>var unitOfWork = new UnitOfWork();</example>
         public UnitOfWork()
         {
             customerDbContext = new CustomerDbContext();
@@ -40,29 +44,57 @@ namespace ValidataTestWebApplication.DAL
             return CustomerRepository.GetAll(filter, orderBy, includeProperties);
         }
 
+        /// <summary>
+        /// Get Customer by ID using settings for completeness of information
+        /// </summary>
+        /// <param name="id">Id of Customer for search</param>
+        /// <param name="includeProperties">Comma-separated lists of properties to add in</param>
+        /// <returns>Asynchronous operation with result as Customer or null</returns>
         public Task<Customer> GetCustomerAsync(int id, string includeProperties = "")
         {
             return CustomerRepository.GetAsync(id, includeProperties);
         }
 
+        /// <summary>
+        /// Create Customer 
+        /// </summary>
+        /// <param name="customer">Customer for creating</param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
         public Task<int> CreateCustomerAsync(Customer customer)
         {
             CustomerRepository.Create(customer);
             return SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
         public Task<int> UpdateCustomerAsync(Customer customer)
         {
             CustomerRepository.Update(customer);
             return SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
         public Task<int> DeleteCustomerAsync(Customer customer)
         {
             CustomerRepository.Delete(customer);
             return SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="includeProperties"></param>
+        /// <returns></returns>
         public IQueryable<Order> GetOrders(Expression<Func<Order, bool>> filter = null,
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null,
             string includeProperties = "")
@@ -70,11 +102,22 @@ namespace ValidataTestWebApplication.DAL
             return OrderRepository.GetAll(filter, orderBy, includeProperties);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="includeProperties"></param>
+        /// <returns>Asynchronous operation with result as </returns>
         public Task<Order> GetOrderAsync(int id, string includeProperties = "")
         {
             return OrderRepository.GetAsync(id, includeProperties);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
         public Task<int> CreateOrderAsync(Order order)
         {
             order.Recalculate();
@@ -82,6 +125,20 @@ namespace ValidataTestWebApplication.DAL
             return SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
         public Task<int> UpdateOrderAsync(Order order)
         {
             order.Recalculate();
@@ -89,6 +146,11 @@ namespace ValidataTestWebApplication.DAL
             return SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
         public Task<int> DeleteOrderAsync(Order order)
         {
             OrderRepository.Delete(order);

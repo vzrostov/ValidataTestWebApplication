@@ -6,6 +6,9 @@ using System.Web;
 
 namespace ValidataTestWebApplication.Models
 {
+    /// <summary>
+    /// Product is a dictionary of goods for Order
+    /// </summary>
     public class Product
     {
         public Product() { }
@@ -18,10 +21,16 @@ namespace ValidataTestWebApplication.Models
         [Required]
         public int ProductId { get; set; }
 
+        /// <summary>
+        /// Provides product name
+        /// </summary>
         [Required]
         [StringLength(200)]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Provides price for one Unit
+        /// </summary>
         [Required]
         [DataType(DataType.Currency)]
         public float Price { get; set; }
