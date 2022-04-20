@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ValidataTest.Core</name>
+    </assembly>
+    <members>
+        <member name="T:ValidataTestWebApplication.Models.Customer">
+            <summary>
+            Customer is a person which makes Orders
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Customer.FirstName">
+            <summary>
+            Provides Customer first name
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Customer.LastName">
+            <summary>
+            Provides Customer last name
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Customer.Address">
+            <summary>
+            Provides Customer address as a string
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Customer.PostalCode">
+            <summary>
+            Provides postal code of Customer address
+            </summary>
+            <remarks>https://www.quora.com/What-is-the-maximum-number-of-digits-in-a-zipcode-postal-code-for-a-place-in-this-universe</remarks>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Customer.Orders">
+            <summary>
+            Provides Orders of Customer
+            </summary>
+        </member>
+        <member name="T:ValidataTestWebApplication.Models.Item">
+            <summary>
+            Item is a part of Order, connecting Order and Product
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Item.Quantity">
+            <summary>
+            Provides quantity of Product in some proper Units
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Item.Product">
+            <summary>
+            Provides Product. Product is a non-changeable in this context entity
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Item.Order">
+            <summary>
+            Provides Order
+            </summary>
+        </member>
+        <member name="T:ValidataTestWebApplication.Models.Order">
+            <summary>
+            Order which was made by Customer, order contents are Items
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Order.Date">
+            <summary>
+            Provides date of Order
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Order.Price">
+            <summary>
+            Provides total price of all Order Items
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Order.Customer">
+            <summary>
+            Provides Order Customer
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Order.Items">
+            <summary>
+            Provides Order contents as Items
+            </summary>
+        </member>
+        <member name="M:ValidataTestWebApplication.Models.Order.Recalculate">
+            <summary>
+            Sum total price by all Items
+            </summary>
+        </member>
+        <member name="T:ValidataTestWebApplication.Models.Product">
+            <summary>
+            Product is a dictionary of goods for Order
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Product.Name">
+            <summary>
+            Provides product name
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.Product.Price">
+            <summary>
+            Provides price for one Unit
+            </summary>
+        </member>
+    </members>
+</doc>

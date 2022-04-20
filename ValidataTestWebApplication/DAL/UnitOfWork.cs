@@ -37,6 +37,13 @@ namespace ValidataTestWebApplication.DAL
             IsForTesting = true;
         }
 
+        /// <summary>
+        /// Get Customers using settings for completeness of information
+        /// </summary>
+        /// <param name="filter">expression for selecting Customers</param>
+        /// <param name="orderBy">function to order by rules</param>
+        /// <param name="includeProperties">comma-separated lists of Customer properties to add in</param>
+        /// <returns>Queries of Customers</returns>
         public IQueryable<Customer> GetCustomers(Expression<Func<Customer, bool>> filter = null,
             Func<IQueryable<Customer>, IOrderedQueryable<Customer>> orderBy = null,
             string includeProperties = "")
@@ -48,18 +55,36 @@ namespace ValidataTestWebApplication.DAL
         /// Get Customer by ID using settings for completeness of information
         /// </summary>
         /// <param name="id">Id of Customer for search</param>
-        /// <param name="includeProperties">Comma-separated lists of properties to add in</param>
+        /// <param name="includeProperties">comma-separated lists of Customer properties to add in</param>
         /// <returns>Asynchronous operation with result as Customer or null</returns>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
         public Task<Customer> GetCustomerAsync(int id, string includeProperties = "")
         {
             return CustomerRepository.GetAsync(id, includeProperties);
         }
 
         /// <summary>
-        /// Create Customer 
+        /// Create Customer in the database
         /// </summary>
         /// <param name="customer">Customer for creating</param>
         /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
         public Task<int> CreateCustomerAsync(Customer customer)
         {
             CustomerRepository.Create(customer);
@@ -67,10 +92,19 @@ namespace ValidataTestWebApplication.DAL
         }
 
         /// <summary>
-        /// 
+        /// Update Customer in the database
         /// </summary>
         /// <param name="customer"></param>
         /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
         public Task<int> UpdateCustomerAsync(Customer customer)
         {
             CustomerRepository.Update(customer);
@@ -78,10 +112,19 @@ namespace ValidataTestWebApplication.DAL
         }
 
         /// <summary>
-        /// 
+        /// Delete Customer from the database
         /// </summary>
         /// <param name="customer"></param>
         /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
         public Task<int> DeleteCustomerAsync(Customer customer)
         {
             CustomerRepository.Delete(customer);
@@ -89,12 +132,12 @@ namespace ValidataTestWebApplication.DAL
         }
 
         /// <summary>
-        /// 
+        /// Get Orders using settings for completeness of information
         /// </summary>
-        /// <param name="filter"></param>
-        /// <param name="orderBy"></param>
-        /// <param name="includeProperties"></param>
-        /// <returns></returns>
+        /// <param name="filter">expression for selecting Orders</param>
+        /// <param name="orderBy">function to order by rules</param>
+        /// <param name="includeProperties">comma-separated lists of Order properties to add in</param>
+        /// <returns>Queries of Orders</returns>
         public IQueryable<Order> GetOrders(Expression<Func<Order, bool>> filter = null,
             Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null,
             string includeProperties = "")
@@ -103,21 +146,39 @@ namespace ValidataTestWebApplication.DAL
         }
 
         /// <summary>
-        /// 
+        /// Get Order by ID using settings for completeness of information
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="includeProperties"></param>
-        /// <returns>Asynchronous operation with result as </returns>
+        /// <param name="id">Id of Order for search</param>
+        /// <param name="includeProperties">comma-separated lists of Order properties to add in</param>
+        /// <returns>Asynchronous operation with result as Order or null</returns>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
         public Task<Order> GetOrderAsync(int id, string includeProperties = "")
         {
             return OrderRepository.GetAsync(id, includeProperties);
         }
 
         /// <summary>
-        /// 
+        /// Create Order in the database
         /// </summary>
-        /// <param name="order"></param>
+        /// <param name="order">Order for creating</param>
         /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
         public Task<int> CreateOrderAsync(Order order)
         {
             order.Recalculate();
@@ -126,7 +187,7 @@ namespace ValidataTestWebApplication.DAL
         }
 
         /// <summary>
-        /// 
+        /// Update Order in the database
         /// </summary>
         /// <param name="order"></param>
         /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
@@ -147,10 +208,19 @@ namespace ValidataTestWebApplication.DAL
         }
 
         /// <summary>
-        /// 
+        /// Delete Customer from the database
         /// </summary>
         /// <param name="order"></param>
         /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
         public Task<int> DeleteOrderAsync(Order order)
         {
             OrderRepository.Delete(order);
