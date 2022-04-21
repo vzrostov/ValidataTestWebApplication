@@ -3,7 +3,7 @@
 ![Validata issue description](ValidataTestWebApplication/Content/images/issue.png)
 ![Validata video guide](ValidataTestWebApplication/Content/video/videoguide.gif)
 # Models XML description
-![Validata XML description](ValidataTest.Core/ValidataTest.Core.xml)
+![Validata XML description - Models](ValidataTest.Core/ValidataTest.Core.xml)
 # Public API XML description
-![Validata XML description](ValidataTestWebApplication/ValidataTestWebApplication.xml)
+![Validata XML description - Public API](ValidataTestWebApplication/ValidataTestWebApplication.xml)
 
