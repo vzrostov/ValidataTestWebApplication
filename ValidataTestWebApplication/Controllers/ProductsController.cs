@@ -24,7 +24,8 @@ namespace ValidataTestWebApplication.Controllers
         // GET: Products
         public async Task<ActionResult> Index()
         {
-            return View(await unitOfWork.ProductRepository.GetAll().ToListAsync());
+            var products = unitOfWork.ProductRepository.GetAll();
+            return View(await products.ToListAsync());
         }
 
         // GET: Products/Details/5

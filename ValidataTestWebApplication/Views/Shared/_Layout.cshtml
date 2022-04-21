@@ -8,23 +8,32 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body background1="~/Content/images/Validatalogo.webp">
+<body>
     <header>
         <div class="content-wrapper">
             <div class="float-left">
-                @*<p class="site-title">@Html.ActionLink("Test Web Application", "Index", "Home")</p>*@
-            </div>
-            <div class="float-right">
                 <nav>
-                    <ul id="menu">
+                    <ul id="menu" style="font-size:larger">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
                         <li>@Html.ActionLink("About", "About", "Home")</li>
+                    </ul>
+                    <h4>Direct database calls</h4>
+                    <ul id="menu" style="font-size:larger">
                         <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                         <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
                         <li>@Html.ActionLink("Items", "Index", "Items")</li>
                         <li>@Html.ActionLink("Products", "Index", "Products")</li>
                     </ul>
+                    <h4>Public API</h4>
+                    <ul id="menu" style="font-size:larger">
+                        <li>@Html.ActionLink("Add pre-made Customer", "Index", "AddCustomer")</li>
+                        <li>@Html.ActionLink("Add pre-made Order to newly added Customer", "Index", "AddOrder")</li>
+                        <li>@Html.ActionLink("Delete newly added Customer with his/her Orders", "Index", "DeleteCustomer")</li>
+                    </ul>
                 </nav>
+            </div>
+            <div class="float-right">
+
             </div>
         </div>
     </header>

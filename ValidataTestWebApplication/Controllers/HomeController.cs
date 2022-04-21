@@ -10,7 +10,7 @@ namespace ValidataTestWebApplication.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Validata Test Web Application";
+            ViewBag.Message = "";
             return View();
         }
 

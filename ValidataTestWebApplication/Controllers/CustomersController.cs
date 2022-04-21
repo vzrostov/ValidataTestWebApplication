@@ -22,9 +22,10 @@ namespace ValidataTestWebApplication.Controllers
         }
 
         // GET: Customers
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(unitOfWork.CustomerRepository.GetAll());
+            var customers = unitOfWork.CustomerRepository.GetAll();
+            return View(await customers.ToListAsync());
         }
 
         // GET: Customers/Details/5

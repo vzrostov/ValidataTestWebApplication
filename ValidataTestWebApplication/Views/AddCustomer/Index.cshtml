@@ -1,0 +1,11 @@
+﻿using ValidataTestWebApplication.Models;
+@model ValidataTestWebApplication.Models.AsyncDbTaskResultForCreate
+
+@{
+    ViewBag.Title = "Result of CreateCustomerAsync is";
+}
+<div style="text-align:center">
+    <h2>@ViewBag.Title</h2>
+    <h2>Number of state entries written to the database: <strong>@Model.TaskResult</strong></h2>
+    <h2>Id of newly added Customer: <strong>@Model.NewId</strong></h2>
+</div>

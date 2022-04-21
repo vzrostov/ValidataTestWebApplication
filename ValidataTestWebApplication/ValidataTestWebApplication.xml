@@ -4,6 +4,11 @@
         <name>ValidataTestWebApplication</name>
     </assembly>
     <members>
+        <member name="F:ValidataTestWebApplication.Controllers.AddCustomerController.LastAddedID">
+            <summary>
+            For deleting demonstration. Not the best decision
+            </summary>
+        </member>
         <member name="T:ValidataTestWebApplication.DAL.InternalUnitOfWork">
             <summary>
             Provides API for inner using (to manipulate DB directly for admin (non public API), to CRUD data manually as a separate rows)
@@ -24,7 +29,7 @@
             <summary>
             Constructor using for tests (possible to set mock dbcontext)
             </summary>
-            <param name="dbctxt">Dbcontext, usually mock object</param>
+            <param name="dbcontext">Dbcontext, usually mock object</param>
         </member>
         <member name="M:ValidataTestWebApplication.DAL.UnitOfWork.GetCustomers(System.Linq.Expressions.Expression{System.Func{ValidataTestWebApplication.Models.Customer,System.Boolean}},System.Func{System.Linq.IQueryable{ValidataTestWebApplication.Models.Customer},System.Linq.IOrderedQueryable{ValidataTestWebApplication.Models.Customer}},System.String)">
             <summary>
@@ -42,10 +47,10 @@
             <param name="id">Id of Customer for search</param>
             <param name="includeProperties">comma-separated lists of Customer properties to add in</param>
             <returns>Asynchronous operation with result as Customer or null</returns>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>        
             <exception cref="T:System.OperationCanceledException">
@@ -58,15 +63,20 @@
             </summary>
             <param name="customer">Customer for creating</param>
             <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>        
             <exception cref="T:System.OperationCanceledException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
-            </exception>       
+            </exception>
+            <example>            
+            UnitOfWork unitOfWork = new UnitOfWork();
+            var customer = new Customer("test Name", "test LastName", "test Address", "test Code", null); /* create with no any orders */
+            var result = await unitOfWork.CreateCustomerAsync(customer); /* "var customer" will have new CustomerID for possible operation further */
+            </example>
         </member>
         <member name="M:ValidataTestWebApplication.DAL.UnitOfWork.UpdateCustomerAsync(ValidataTestWebApplication.Models.Customer)">
             <summary>
@@ -74,10 +84,10 @@
             </summary>
             <param name="customer"></param>
             <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>        
             <exception cref="T:System.OperationCanceledException">
@@ -90,10 +100,10 @@
             </summary>
             <param name="customer"></param>
             <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>        
             <exception cref="T:System.OperationCanceledException">
@@ -116,10 +126,10 @@
             <param name="id">Id of Order for search</param>
             <param name="includeProperties">comma-separated lists of Order properties to add in</param>
             <returns>Asynchronous operation with result as Order or null</returns>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>        
             <exception cref="T:System.OperationCanceledException">
@@ -132,10 +142,10 @@
             </summary>
             <param name="order">Order for creating</param>
             <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>        
             <exception cref="T:System.OperationCanceledException">
@@ -148,10 +158,10 @@
             </summary>
             <param name="order"></param>
             <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>        
             <exception cref="T:System.OperationCanceledException">
@@ -164,15 +174,25 @@
             </summary>
             <param name="order"></param>
             <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>
-            <exception cref="!:Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>        
             <exception cref="T:System.OperationCanceledException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
             </exception>       
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.AsyncDbTaskResult.TaskResult">
+            <summary>
+            Task result is returned from SaveChangesAsync
+            </summary>
+        </member>
+        <member name="P:ValidataTestWebApplication.Models.AsyncDbTaskResultForCreate.NewId">
+            <summary>
+            Id of newly added record to database
+            </summary>
         </member>
     </members>
 </doc>
