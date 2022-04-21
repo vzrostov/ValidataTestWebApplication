@@ -37,14 +37,14 @@ namespace ValidataTests.UnitTests
         {
         }
 
-        static IOrderedQueryable<Order> OrderingMethodByDate(IQueryable<Order> query) =>
+        static IOrderedQueryable<Order> OrderingByDate(IQueryable<Order> query) =>
             query.OrderBy(c => c.Date);
 
-        static IOrderedQueryable<Order> OrderingMethodByDateDescending(IQueryable<Order> query) =>
+        static IOrderedQueryable<Order> OrderingByDateDescending(IQueryable<Order> query) =>
             query.OrderByDescending(c => c.Date);
 
-        static Expression<Func<Order, bool>> FilterByPrice(float limit, int customerId) =>
-            x => x.TotalPrice > limit && (x.CustomerID == customerId);
+        static Expression<Func<Order, bool>> FilterByDateMoreThanLimit(DateTime limit, int customerId) =>
+            x => x.Date > limit && (x.CustomerID == customerId);
 
         static IEnumerable<TestCaseData> GetAllTestCases
         {
@@ -80,7 +80,7 @@ namespace ValidataTests.UnitTests
                     TestsHelper.GetTestOrders(),
                     TestsHelper.GetTestItems(),
                     null,
-                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingMethodByDate
+                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingByDate
                     );
                 yield return new TestCaseData("Many customer orders in DB test with ordering DESC", new DesiredResult(3, 3, 2),
                     9,
@@ -88,23 +88,25 @@ namespace ValidataTests.UnitTests
                     TestsHelper.GetTestOrders(),
                     TestsHelper.GetTestItems(),
                     null,
-                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingMethodByDateDescending
+                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingByDateDescending
                     );
-                yield return new TestCaseData("Many customer orders in DB test with ordering ASC and filtering", new DesiredResult(2, 2, 1),
+                yield return new TestCaseData("Many customer orders in DB test with ordering ASC and filtering", 
+                    new DesiredResult(2, 1, 3),
                     9,
                     TestsHelper.GetTestCustomers(),
                     TestsHelper.GetTestOrders(),
                     TestsHelper.GetTestItems(),
-                    FilterByPrice(5f, 9),
-                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingMethodByDate
+                    FilterByDateMoreThanLimit(new DateTime(2022, 04, 12, 1, 30, 0), 9),
+                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingByDate
                     );
-                yield return new TestCaseData("Many customer orders in DB test with ordering DESC and filtering", new DesiredResult(2, 1, 2),
+                yield return new TestCaseData("Many customer orders in DB test with ordering DESC and filtering", 
+                    new DesiredResult(2, 3, 1),
                     9,
                     TestsHelper.GetTestCustomers(),
                     TestsHelper.GetTestOrders(),
                     TestsHelper.GetTestItems(),
-                    FilterByPrice(5f, 9),
-                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingMethodByDateDescending
+                    FilterByDateMoreThanLimit(new DateTime(2022, 04, 12, 1, 30, 0), 9),
+                    (Func<IQueryable<Order>, IOrderedQueryable<Order>>)OrderingByDateDescending
                     );
             }
         }

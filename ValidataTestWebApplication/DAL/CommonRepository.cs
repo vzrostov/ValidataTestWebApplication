@@ -13,6 +13,7 @@ namespace ValidataTestWebApplication.DAL
     {
         ICustomerDbContext _customerDbContext = null; 
         DbSet<T> _dbSet = null;
+        public bool IsForTesting { internal set; get; } = false;
 
         public CommonRepository()
         {
@@ -77,15 +78,17 @@ namespace ValidataTestWebApplication.DAL
         public void Update(T obj)
         {
             _dbSet.Attach(obj);
-            _customerDbContext.DBContext.Entry(obj).State = EntityState.Modified;
+            if(!IsForTesting)
+                _customerDbContext.DBContext.Entry(obj).State = EntityState.Modified;
         }
 
         public void Delete(T obj)
         {
-            if (_customerDbContext.DBContext.Entry(obj).State == EntityState.Detached)
-            {
-                _dbSet.Attach(obj);
-            }
+            if (!IsForTesting)
+                if (_customerDbContext.DBContext.Entry(obj).State == EntityState.Detached)
+                {
+                    _dbSet.Attach(obj);
+                }
             _dbSet.Remove(obj);
         }
     }

@@ -237,7 +237,8 @@ namespace ValidataTestWebApplication.DAL
             {
                 if (this.customerRepository == null)
                 {
-                    this.customerRepository = new CommonRepository<Customer>(customerDbContext);
+                    this.customerRepository = new CommonRepository<Customer>(customerDbContext) 
+                    { IsForTesting = this.IsForTesting };
                 }
                 return customerRepository;
             }
@@ -249,7 +250,8 @@ namespace ValidataTestWebApplication.DAL
             {
                 if (this.orderRepository == null)
                 {
-                    this.orderRepository = new CommonRepository<Order>(customerDbContext);
+                    this.orderRepository = new CommonRepository<Order>(customerDbContext)
+                    { IsForTesting = this.IsForTesting };
                 }
                 return orderRepository;
             }
