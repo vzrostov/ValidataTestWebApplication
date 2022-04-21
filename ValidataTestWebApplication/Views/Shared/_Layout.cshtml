@@ -15,7 +15,7 @@
                 <nav>
                     <ul id="menu" style="font-size:larger">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
                     </ul>
                     <h4>Direct database calls</h4>
                     <ul id="menu" style="font-size:larger">
@@ -26,9 +26,9 @@
                     </ul>
                     <h4>Public API</h4>
                     <ul id="menu" style="font-size:larger">
-                        <li>@Html.ActionLink("Add pre-made Customer", "Index", "AddCustomer")</li>
-                        <li>@Html.ActionLink("Add pre-made Order to newly added Customer", "Index", "AddOrder")</li>
-                        <li>@Html.ActionLink("Delete newly added Customer with his/her Orders", "Index", "DeleteCustomer")</li>
+                        <li>@Html.ActionLink("Add pre-made Customer (CreateCustomerAsync)", "Index", "AddCustomer")</li>
+                        <li>@Html.ActionLink("Add pre-made Order to newly added Customer (CreateOrderAsync)", "Index", "AddOrder")</li>
+                        <li>@Html.ActionLink("Delete newly added Customer with his/her Orders (DeleteCustomerAsync)", "Index", "DeleteCustomer")</li>
                     </ul>
                 </nav>
             </div>
