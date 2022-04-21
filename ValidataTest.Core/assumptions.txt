@@ -1,1 +1,7 @@
-some info
+1) Added GUI even though it wasn't required and make a video
+2) Added functions for managing Products, although this was not required, in fact, Products are a reference table (dictionary)
+3) Price - float. The issues of rounding fractions were not considered in detail. Address, postal code - strings.
+4) If the function changes something or can run for a long time, then it is asynchronous
+5) Functions can throw exceptions no more than the standard SaveChangesAsync function
+6) A customer can be created without an order and with an order(s). You can add and remove items to the order later. When an order is deleted, its items are deleted, when a customer is deleted, all his orders are deleted cascaded.
+7) Migration is attached in folder Migrations
