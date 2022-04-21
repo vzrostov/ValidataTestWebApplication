@@ -187,7 +187,6 @@ namespace ValidataTestWebApplication.DAL
         /// </exception>       
         public Task<int> CreateOrderAsync(Order order)
         {
-            order.Recalculate();
             OrderRepository.Create(order);
             return SaveChangesAsync();
         }
@@ -208,7 +207,6 @@ namespace ValidataTestWebApplication.DAL
         /// </exception>       
         public Task<int> UpdateOrderAsync(Order order)
         {
-            order.Recalculate();
             OrderRepository.Update(order);
             return SaveChangesAsync();
         }

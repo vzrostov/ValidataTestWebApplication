@@ -177,9 +177,9 @@
     <Compile Include="Migrations\202204082202168_m62.designer.cs">
       <DependentUpon>202204082202168_m62.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202204192104543_m71.cs" />
-    <Compile Include="Migrations\202204192104543_m71.designer.cs">
-      <DependentUpon>202204192104543_m71.cs</DependentUpon>
+    <Compile Include="Migrations\202204211202192_m80.cs" />
+    <Compile Include="Migrations\202204211202192_m80.designer.cs">
+      <DependentUpon>202204211202192_m80.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AsyncDbTaskResult.cs" />
@@ -289,8 +289,8 @@
     <EmbeddedResource Include="Migrations\202204082202168_m62.resx">
       <DependentUpon>202204082202168_m62.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204192104543_m71.resx">
-      <DependentUpon>202204192104543_m71.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202204211202192_m80.resx">
+      <DependentUpon>202204211202192_m80.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

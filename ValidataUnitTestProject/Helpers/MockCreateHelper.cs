@@ -11,7 +11,10 @@ namespace ValidataUnitTests.Helpers
 {
     internal static class MockCreateHelper
     {
-        internal static Mock<ICustomerDbContext> GetAsyncDbContextMock(IQueryable<Customer> data, IQueryable<Order>? dataOrder = null, IQueryable<Item>? dataItem = null)
+        internal static Mock<ICustomerDbContext> GetAsyncDbContextMock(IQueryable<Customer> data, 
+            IQueryable<Order>? dataOrder = null, 
+            IQueryable<Item>? dataItem = null,
+            IQueryable<Product>? dataProduct = null)
         {
             // customer
             var mockCustomerSet = new Mock<DbSet<Customer>>();
@@ -86,6 +89,14 @@ namespace ValidataUnitTests.Helpers
                 AssignDataInMockSet(mockItemSet, dataItem);
             }
 
+            // product
+            var mockProductSet = new Mock<DbSet<Product>>();
+            // order and items sets are excess sometimes
+            if (dataProduct != null)
+            {
+                AssignDataInMockSet(mockProductSet, dataProduct);
+            }
+
             // DbContext
             var mockDbContext = new Mock<DbContext>();
             mockDbContext.Setup(m => m.Set<Customer>()).Returns(mockCustomerSet.Object);
@@ -93,6 +104,8 @@ namespace ValidataUnitTests.Helpers
                 mockDbContext.Setup(m => m.Set<Order>()).Returns(mockOrderSet.Object);
             if (dataItem != null)
                 mockDbContext.Setup(m => m.Set<Item>()).Returns(mockItemSet.Object);
+            if (dataProduct != null)
+                mockDbContext.Setup(m => m.Set<Product>()).Returns(mockProductSet.Object);
 
             var mockContext = new Mock<ICustomerDbContext>();
             mockContext.Setup(m => m.SaveChangesAsync()).ReturnsAsync(() =>

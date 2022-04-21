@@ -16,22 +16,19 @@ namespace ValidataTests.UnitTests
         {
             public int id;
             public DateTime date;
-            public float price;
             public int itemCount;
 
             public DesiredResult()
             {
                 this.id = 0;
                 this.date = new DateTime();
-                this.price = 0f;
                 this.itemCount = 0;
             }
 
-            public DesiredResult(int id, DateTime date, float price, int itemCount)
+            public DesiredResult(int id, DateTime date, int itemCount)
             {
                 this.id = id;
                 this.date = date;
-                this.price = price;
                 this.itemCount = itemCount;
             }
         }
@@ -45,16 +42,20 @@ namespace ValidataTests.UnitTests
         {
             get
             {
-                yield return new TestCaseData("Get order from DB test", 1, true, new DesiredResult(1, new DateTime(2022, 04, 12, 2, 0, 0), 10f, 3),
-                    TestsHelper.GetTestCustomers(), TestsHelper.GetOneTestOrderedCustomers().First().Orders, TestsHelper.GetTestItems());
+                yield return new TestCaseData("Get order from DB test", 1, true, new DesiredResult(1, new DateTime(2022, 04, 12, 2, 0, 0), 3), 24.5f,
+                    TestsHelper.GetTestCustomers(), 
+                    TestsHelper.GetOneTestOrderedCustomers().First().Orders, 
+                    TestsHelper.GetTestItems(), 
+                    TestsHelper.GetTestProducts());
             }
         }
 
         [TestCaseSource("GetAllTestCases")]
-        public void GetCustomerTest(string description, int idOrder, bool isExist, DesiredResult result, List<Customer> inCustomerList, List<Order> inOrderList, List<Item> inItemsList)
+        public void GetCustomerTest(string description, int idOrder, bool isExist, DesiredResult result, float resultprice,
+            List<Customer> inCustomerList, List<Order> inOrderList, List<Item> inItemsList, List<Product> inProductsList)
         {
             // Arrange
-            MockContext = MockCreateHelper.GetAsyncDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
+            MockContext = MockCreateHelper.GetAsyncDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable(), inProductsList.AsQueryable());
             UnitOfWork = new UnitOfWork(MockContext?.Object);
             // Act
             var task = UnitOfWork?.GetOrderAsync(idOrder, "Items").ContinueWith(x =>
@@ -66,9 +67,9 @@ namespace ValidataTests.UnitTests
                     new DesiredResult(
                         x.Result.OrderId,
                         x.Result.Date,
-                        x.Result.Price,
                         x.Result.Items?.Count ?? 0),
                     description);
+                Assert.AreEqual(resultprice, x.Result.TotalPrice, description + " Check TotalPrice calculating"); 
             });
             task?.Wait();
         }

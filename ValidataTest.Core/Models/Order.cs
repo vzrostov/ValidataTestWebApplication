@@ -14,10 +14,9 @@ namespace ValidataTestWebApplication.Models
     public class Order
     {
         public Order() { }
-        public Order(DateTime date, float price, int customerID, Customer customer, ICollection<Item> items) 
+        public Order(DateTime date, int customerID, Customer customer, ICollection<Item> items) 
         { 
             Date = date; 
-            Price = price;
             CustomerID = customerID;
             Customer = customer;
             Items = items;
@@ -34,13 +33,6 @@ namespace ValidataTestWebApplication.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
-        /// <summary>
-        /// Provides total price of all Order Items
-        /// </summary>
-        [Required]
-        [DataType(DataType.Currency)]
-        public float Price { get; set; }
-
         [Required]
         public int CustomerID { get; set; }
 
@@ -54,13 +46,20 @@ namespace ValidataTestWebApplication.Models
         /// </summary>
         public virtual ICollection<Item> Items { get; set; }
 
+        private float totalPrice;
         /// <summary>
-        /// Sum total price by all Items
+        /// Provides total price of all Order Items. Recalculating everytime when you call it
         /// </summary>
-        public void Recalculate()
-        {
-            var newprice = Items?.Aggregate(0f, (total, item) => total + (item.Product?.Price ?? 0f) * item.Quantity);
-            Price = newprice ?? 0f; // must be atomic?
+        [NotMapped]
+        public float TotalPrice 
+        { 
+            get
+            {
+                // TODO Further may consider Cache if we will have a big amount of Items
+                totalPrice = Items?.Aggregate(0f, (total, item) => total + (item.Product?.Price ?? 0f) * item.Quantity) ?? 0f;
+                return totalPrice; 
+            }
+            set { totalPrice = value; }
         }
     }
 }

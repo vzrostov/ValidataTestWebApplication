@@ -7,13 +7,13 @@ namespace ValidataTestWebApplication.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class m71 : IMigrationMetadata
+    public sealed partial class m80 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(m71));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(m80));
         
         string IMigrationMetadata.Id
         {
-            get { return "202204192104543_m71"; }
+            get { return "202204211202192_m80"; }
         }
         
         string IMigrationMetadata.Source

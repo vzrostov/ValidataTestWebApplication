@@ -16,7 +16,7 @@ namespace ValidataTestWebApplication.Controllers
         public async Task<ActionResult> Index()
         {
             UnitOfWork unitOfWork = new UnitOfWork();
-            var order = new Order(DateTime.Now, 0f, AddCustomerController.LastAddedID, null,
+            var order = new Order(DateTime.Now, AddCustomerController.LastAddedID, null,
                     new ReadOnlyCollection<Item>(
                         new List<Item>()
                         {

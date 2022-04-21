@@ -52,7 +52,7 @@ namespace ValidataTests.UnitTests
             int prevCount = inOrderList.Count;
             MockContext = MockCreateHelper.GetAsyncDbContextMock(inCustomerList.AsQueryable(), inOrderList.AsQueryable(), inItemsList.AsQueryable());
             UnitOfWork = new UnitOfWork(MockContext?.Object);
-            var order = new Order(System.DateTime.Now, 22.3f, 10, null, null) { OrderId = 55 };
+            var order = new Order(System.DateTime.Now, 10, null, null) { OrderId = 55 };
             // Act
             var task = UnitOfWork?.CreateOrderAsync(order).ContinueWith(t =>
             {

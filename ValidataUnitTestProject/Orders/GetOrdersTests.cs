@@ -44,7 +44,7 @@ namespace ValidataTests.UnitTests
             query.OrderByDescending(c => c.Date);
 
         static Expression<Func<Order, bool>> FilterByPrice(float limit, int customerId) =>
-            x => x.Price > limit && (x.CustomerID == customerId);
+            x => x.TotalPrice > limit && (x.CustomerID == customerId);
 
         static IEnumerable<TestCaseData> GetAllTestCases
         {
