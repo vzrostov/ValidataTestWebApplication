@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 
-namespace ValidataTestWebApplication.Models
+namespace ValidataTest.Core.Models
 {
     /// <summary>
     /// Order which was made by Customer, order contents are Items

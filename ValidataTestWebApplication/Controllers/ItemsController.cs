@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using ValidataTestWebApplication.DAL;
 using ValidataTestWebApplication.Models;
+using ValidataTest.Core.Models;
 
 namespace ValidataTestWebApplication.Controllers
 {

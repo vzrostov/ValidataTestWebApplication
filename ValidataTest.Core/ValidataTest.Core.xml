@@ -4,93 +4,263 @@
         <name>ValidataTest.Core</name>
     </assembly>
     <members>
-        <member name="T:ValidataTestWebApplication.Models.Customer">
+        <member name="T:ValidataTest.Core.DAL.UnitOfWork">
+            <summary>
+            Provides API to manipulate customers and their orders through CustomerRepository and OrderRepository
+            </summary>
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.#ctor">
+            <summary>
+            Constructor for creating Unit of Work with Data Source to manipulate customers and their orders
+            </summary>
+            <example>var unitOfWork = new UnitOfWork();</example>
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.#ctor(ValidataTest.Core.DAL.ICustomerDbContext)">
+            <summary>
+            Constructor using for tests (possible to set mock dbcontext)
+            </summary>
+            <param name="dbcontext">Dbcontext, usually mock object</param>
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.GetCustomers(System.Linq.Expressions.Expression{System.Func{ValidataTest.Core.Models.Customer,System.Boolean}},System.Func{System.Linq.IQueryable{ValidataTest.Core.Models.Customer},System.Linq.IOrderedQueryable{ValidataTest.Core.Models.Customer}},System.String)">
+            <summary>
+            Get Customers using settings for completeness of information
+            </summary>
+            <param name="filter">expression for selecting Customers</param>
+            <param name="orderBy">function to order by rules</param>
+            <param name="includeProperties">comma-separated lists of Customer properties to add in</param>
+            <returns>Queries of Customers</returns>
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.GetCustomerAsync(System.Int32,System.String)">
+            <summary>
+            Get Customer by ID using settings for completeness of information
+            </summary>
+            <param name="id">Id of Customer for search</param>
+            <param name="includeProperties">comma-separated lists of Customer properties to add in</param>
+            <returns>Asynchronous operation with result as Customer or null</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.CreateCustomerAsync(ValidataTest.Core.Models.Customer)">
+            <summary>
+            Create Customer in the database
+            </summary>
+            <param name="customer">Customer for creating</param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <example>            
+            UnitOfWork unitOfWork = new UnitOfWork();
+            var customer = new Customer("test Name", "test LastName", "test Address", "test Code", null); /* create with no any orders */
+            var result = await unitOfWork.CreateCustomerAsync(customer); /* "var customer" will have new CustomerID for possible operation further */
+            </example>
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.UpdateCustomerAsync(ValidataTest.Core.Models.Customer)">
+            <summary>
+            Update Customer in the database
+            </summary>
+            <param name="customer"></param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.DeleteCustomerAsync(ValidataTest.Core.Models.Customer)">
+            <summary>
+            Delete Customer from the database
+            </summary>
+            <param name="customer"></param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.GetOrders(System.Linq.Expressions.Expression{System.Func{ValidataTest.Core.Models.Order,System.Boolean}},System.Func{System.Linq.IQueryable{ValidataTest.Core.Models.Order},System.Linq.IOrderedQueryable{ValidataTest.Core.Models.Order}},System.String)">
+            <summary>
+            Get Orders using settings for completeness of information
+            </summary>
+            <param name="filter">expression for selecting Orders</param>
+            <param name="orderBy">function to order by rules</param>
+            <param name="includeProperties">comma-separated lists of Order properties to add in</param>
+            <returns>Queries of Orders</returns>
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.GetOrderAsync(System.Int32,System.String)">
+            <summary>
+            Get Order by ID using settings for completeness of information
+            </summary>
+            <param name="id">Id of Order for search</param>
+            <param name="includeProperties">comma-separated lists of Order properties to add in</param>
+            <returns>Asynchronous operation with result as Order or null</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.CreateOrderAsync(ValidataTest.Core.Models.Order)">
+            <summary>
+            Create Order in the database
+            </summary>
+            <param name="order">Order for creating</param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.UpdateOrderAsync(ValidataTest.Core.Models.Order)">
+            <summary>
+            Update Order in the database
+            </summary>
+            <param name="order"></param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.DeleteOrderAsync(ValidataTest.Core.Models.Order)">
+            <summary>
+            Delete Customer from the database
+            </summary>
+            <param name="order"></param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="T:ValidataTest.Core.Models.Customer">
             <summary>
             Customer is a person which makes Orders
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Customer.FirstName">
+        <member name="P:ValidataTest.Core.Models.Customer.FirstName">
             <summary>
             Provides Customer first name
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Customer.LastName">
+        <member name="P:ValidataTest.Core.Models.Customer.LastName">
             <summary>
             Provides Customer last name
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Customer.Address">
+        <member name="P:ValidataTest.Core.Models.Customer.Address">
             <summary>
             Provides Customer address as a string
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Customer.PostalCode">
+        <member name="P:ValidataTest.Core.Models.Customer.PostalCode">
             <summary>
             Provides postal code of Customer address
             </summary>
             <remarks>https://www.quora.com/What-is-the-maximum-number-of-digits-in-a-zipcode-postal-code-for-a-place-in-this-universe</remarks>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Customer.Orders">
+        <member name="P:ValidataTest.Core.Models.Customer.Orders">
             <summary>
             Provides Orders of Customer
             </summary>
         </member>
-        <member name="T:ValidataTestWebApplication.Models.Item">
+        <member name="T:ValidataTest.Core.Models.Item">
             <summary>
             Item is a part of Order, connecting Order and Product
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Item.Quantity">
+        <member name="P:ValidataTest.Core.Models.Item.Quantity">
             <summary>
             Provides quantity of Product in some proper Units
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Item.Product">
+        <member name="P:ValidataTest.Core.Models.Item.Product">
             <summary>
             Provides Product. Product is a non-changeable in this context entity
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Item.Order">
+        <member name="P:ValidataTest.Core.Models.Item.Order">
             <summary>
             Provides Order
             </summary>
         </member>
-        <member name="T:ValidataTestWebApplication.Models.Order">
+        <member name="T:ValidataTest.Core.Models.Order">
             <summary>
             Order which was made by Customer, order contents are Items
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Order.Date">
+        <member name="P:ValidataTest.Core.Models.Order.Date">
             <summary>
             Provides date of Order
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Order.Customer">
+        <member name="P:ValidataTest.Core.Models.Order.Customer">
             <summary>
             Provides Order Customer
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Order.Items">
+        <member name="P:ValidataTest.Core.Models.Order.Items">
             <summary>
             Provides Order contents as Items
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Order.TotalPrice">
+        <member name="P:ValidataTest.Core.Models.Order.TotalPrice">
             <summary>
             Provides total price of all Order Items. Recalculating everytime when you call it
             </summary>
         </member>
-        <member name="T:ValidataTestWebApplication.Models.Product">
+        <member name="T:ValidataTest.Core.Models.Product">
             <summary>
             Product is a dictionary of goods for Order
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Product.Name">
+        <member name="P:ValidataTest.Core.Models.Product.Name">
             <summary>
             Provides product name
             </summary>
         </member>
-        <member name="P:ValidataTestWebApplication.Models.Product.Price">
+        <member name="P:ValidataTest.Core.Models.Product.Price">
             <summary>
             Provides price for one Unit
             </summary>

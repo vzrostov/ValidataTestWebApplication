@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace ValidataTestWebApplication.Models
+namespace ValidataTest.Core.Models
 {
     /// <summary>
     /// Product is a dictionary of goods for Order
