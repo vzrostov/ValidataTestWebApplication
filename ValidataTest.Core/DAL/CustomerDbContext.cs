@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
-using ValidataTestWebApplication.Models;
+using ValidataTest.Core.Models;
 
-namespace ValidataTestWebApplication.DAL
+namespace ValidataTest.Core.DAL
 {
     public class CustomerDbContext : DbContext, ICustomerDbContext
     {

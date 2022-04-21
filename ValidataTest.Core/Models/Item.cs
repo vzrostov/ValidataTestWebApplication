@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace ValidataTestWebApplication.Models
+namespace ValidataTest.Core.Models
 {
     /// <summary>
     /// Item is a part of Order, connecting Order and Product

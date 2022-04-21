@@ -5,9 +5,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
-using ValidataTestWebApplication.Models;
+using ValidataTest.Core.Models;
 
-namespace ValidataTestWebApplication.DAL
+namespace ValidataTest.Core.DAL
 {
     /// <summary>
     /// Provides API to manipulate customers and their orders through CustomerRepository and OrderRepository

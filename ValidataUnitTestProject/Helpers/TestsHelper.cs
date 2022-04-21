@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ValidataTestWebApplication.Models;
+using ValidataTest.Core.Models;
 
 namespace ValidataUnitTests
 {

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ValidataTestWebApplication\ValidataTest.WebApplication.csproj" />
+    <ProjectReference Include="..\ValidataTest.Core\ValidataTest.Core.csproj" />
   </ItemGroup>
 
 </Project>

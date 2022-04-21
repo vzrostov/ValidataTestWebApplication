@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace ValidataTestWebApplication.DAL
+namespace ValidataTest.Core.DAL
 {
     public interface IRepository<T> where T : class
     {

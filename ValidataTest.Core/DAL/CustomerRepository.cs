@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ValidataTestWebApplication.DAL
+namespace ValidataTest.Core.DAL
 {
     public class CustomerRepository
     {

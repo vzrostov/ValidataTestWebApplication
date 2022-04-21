@@ -4,8 +4,8 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ValidataTestWebApplication.DAL;
-using ValidataTestWebApplication.Models;
+using ValidataTest.Core.DAL;
+using ValidataTest.Core.Models;
 
 namespace ValidataUnitTests.Helpers
 {

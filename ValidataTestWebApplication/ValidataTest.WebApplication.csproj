@@ -136,52 +136,10 @@
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
-    <Compile Include="DAL\CommonRepository.cs" />
-    <Compile Include="DAL\CustomerRepository.cs" />
-    <Compile Include="DAL\ICustomerDbContext.cs" />
-    <Compile Include="DAL\CustomerDbContext.cs" />
     <Compile Include="DAL.Internal\InternalUnitOfWork.cs" />
-    <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202204071909301_InitialCreate.cs" />
-    <Compile Include="Migrations\202204071909301_InitialCreate.designer.cs">
-      <DependentUpon>202204071909301_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204081951460_AddTwoTables.cs" />
-    <Compile Include="Migrations\202204081951460_AddTwoTables.designer.cs">
-      <DependentUpon>202204081951460_AddTwoTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204082041299_m3.cs" />
-    <Compile Include="Migrations\202204082041299_m3.designer.cs">
-      <DependentUpon>202204082041299_m3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204082059416_m4.cs" />
-    <Compile Include="Migrations\202204082059416_m4.designer.cs">
-      <DependentUpon>202204082059416_m4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204082117495_m5.cs" />
-    <Compile Include="Migrations\202204082117495_m5.designer.cs">
-      <DependentUpon>202204082117495_m5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204082127404_m6.cs" />
-    <Compile Include="Migrations\202204082127404_m6.designer.cs">
-      <DependentUpon>202204082127404_m6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204082146346_m61.cs" />
-    <Compile Include="Migrations\202204082146346_m61.designer.cs">
-      <DependentUpon>202204082146346_m61.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204082202168_m62.cs" />
-    <Compile Include="Migrations\202204082202168_m62.designer.cs">
-      <DependentUpon>202204082202168_m62.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204211202192_m80.cs" />
-    <Compile Include="Migrations\202204211202192_m80.designer.cs">
-      <DependentUpon>202204211202192_m80.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AsyncDbTaskResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -263,35 +221,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202204071909301_InitialCreate.resx">
-      <DependentUpon>202204071909301_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204081951460_AddTwoTables.resx">
-      <DependentUpon>202204081951460_AddTwoTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204082041299_m3.resx">
-      <DependentUpon>202204082041299_m3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204082059416_m4.resx">
-      <DependentUpon>202204082059416_m4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204082117495_m5.resx">
-      <DependentUpon>202204082117495_m5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204082127404_m6.resx">
-      <DependentUpon>202204082127404_m6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204082146346_m61.resx">
-      <DependentUpon>202204082146346_m61.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204082202168_m62.resx">
-      <DependentUpon>202204082202168_m62.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204211202192_m80.resx">
-      <DependentUpon>202204211202192_m80.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ValidataTest.Core\ValidataTest.Core.csproj">

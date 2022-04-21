@@ -1,6 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
-using ValidataTestWebApplication.DAL;
+using ValidataTest.Core.DAL;
 
 namespace ValidataTests.UnitTests
 {

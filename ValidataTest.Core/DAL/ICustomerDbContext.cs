@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
 using System.Threading.Tasks;
-using ValidataTestWebApplication.Models;
+using ValidataTest.Core.Models;
 
-namespace ValidataTestWebApplication.DAL
+namespace ValidataTest.Core.DAL
 {
 
     public interface ICustomerDbContext

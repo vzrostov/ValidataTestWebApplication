@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ValidataTestWebApplication.DAL;
-using ValidataTestWebApplication.Models;
+using ValidataTest.Core.DAL;
+using ValidataTest.Core.Models;
 using ValidataUnitTests;
 using ValidataUnitTests.Helpers;
 
