@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ValidataTest.Core.DAL;
 using ValidataTest.Core.Models;
-using ValidataTestWebApplication.DAL;
 
 namespace ValidataTestWebApplication.Controllers
 {
     public class OrdersController : Controller
     {
-        private InternalUnitOfWork unitOfWork;
+        private UnitOfWork unitOfWork;
 
         public OrdersController()
         {
-            unitOfWork = new InternalUnitOfWork();
+            unitOfWork = new UnitOfWork();
         }
 
         // GET: Orders
         public async Task<ActionResult> Index()
         {
-            var orders = unitOfWork.OrderRepository.GetAll(); 
+            var orders = unitOfWork.GetOrders(); 
             return View(await orders.ToListAsync());
         }
 
@@ -36,7 +30,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await unitOfWork.OrderRepository.GetAsync((int)id);
+            Order order = await unitOfWork.GetOrderAsync((int)id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -47,7 +41,7 @@ namespace ValidataTestWebApplication.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            ViewBag.CustomerID = new SelectList(unitOfWork.DbContext.Customers, "CustomerID", "FirstName");
+            ViewBag.CustomerID = new SelectList(unitOfWork.GetCustomers(), "CustomerID", "FirstName");
             return View();
         }
 
@@ -60,12 +54,11 @@ namespace ValidataTestWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.OrderRepository.Create(order);
-                await unitOfWork.SaveChangesAsync(); // TODO сделать везде обработку исключения, проверить возвращаемое значение
+                await unitOfWork.CreateOrderAsync(order);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CustomerID = new SelectList(unitOfWork.DbContext.Customers, "CustomerID", "FirstName", order.CustomerID);
+            ViewBag.CustomerID = new SelectList(unitOfWork.GetCustomers(), "CustomerID", "FirstName", order.CustomerID);
             return View(order);
         }
 
@@ -76,12 +69,12 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await unitOfWork.OrderRepository.GetAsync((int)id);
+            Order order = await unitOfWork.GetOrderAsync((int)id);
             if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CustomerID = new SelectList(unitOfWork.DbContext.Customers, "CustomerID", "FirstName", order.CustomerID);
+            ViewBag.CustomerID = new SelectList(unitOfWork.GetCustomers(), "CustomerID", "FirstName", order.CustomerID);
             return View(order);
         }
 
@@ -94,11 +87,10 @@ namespace ValidataTestWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.OrderRepository.Update(order);
-                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.UpdateOrderAsync(order);
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerID = new SelectList(unitOfWork.DbContext.Customers, "CustomerID", "FirstName", order.CustomerID);
+            ViewBag.CustomerID = new SelectList(unitOfWork.GetCustomers(), "CustomerID", "FirstName", order.CustomerID);
             return View(order);
         }
 
@@ -109,7 +101,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await unitOfWork.OrderRepository.GetAsync((int)id);
+            Order order = await unitOfWork.GetOrderAsync((int)id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -122,9 +114,8 @@ namespace ValidataTestWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Order order = await unitOfWork.OrderRepository.GetAsync(id);
-            unitOfWork.OrderRepository.Delete(order);
-            await unitOfWork.SaveChangesAsync();
+            Order order = await unitOfWork.GetOrderAsync(id);
+            await unitOfWork.DeleteOrderAsync(order);
             return RedirectToAction("Index");
         }
 

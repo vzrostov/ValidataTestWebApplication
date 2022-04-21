@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using ValidataTestWebApplication.DAL;
-using ValidataTestWebApplication.Models;
+using ValidataTest.Core.DAL;
 using ValidataTest.Core.Models;
 
 namespace ValidataTestWebApplication.Controllers
 {
     public class ItemsController : Controller
     {
-        private InternalUnitOfWork unitOfWork;
+        private UnitOfWork unitOfWork;
 
         public ItemsController()
         {
-            unitOfWork = new InternalUnitOfWork();
+            unitOfWork = new UnitOfWork();
         }
 
         // GET: Items
         public async Task<ActionResult> Index()
         {
-            var items = unitOfWork.ItemRepository.GetAll();
+            var items = unitOfWork.GetItems();
             return View(await items.ToListAsync());
         }
 
@@ -36,7 +30,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = await unitOfWork.ItemRepository.GetAsync((int)id);
+            Item item = await unitOfWork.GetItemAsync((int)id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -47,8 +41,8 @@ namespace ValidataTestWebApplication.Controllers
         // GET: Items/Create
         public ActionResult Create()
         {
-            ViewBag.OrderID = new SelectList(unitOfWork.DbContext.Orders, "OrderId", "OrderId");
-            ViewBag.ProductID = new SelectList(unitOfWork.DbContext.Products, "ProductId", "Name");
+            ViewBag.OrderID = new SelectList(unitOfWork.GetOrders(), "OrderId", "OrderId");
+            ViewBag.ProductID = new SelectList(unitOfWork.GetProducts(), "ProductId", "Name");
             return View();
         }
 
@@ -61,13 +55,12 @@ namespace ValidataTestWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.ItemRepository.Create(item);
-                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CreateItemAsync(item);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderID = new SelectList(unitOfWork.DbContext.Orders, "OrderId", "OrderId", item.OrderID);
-            ViewBag.ProductID = new SelectList(unitOfWork.DbContext.Products, "ProductId", "Name", item.ProductID);
+            ViewBag.OrderID = new SelectList(unitOfWork.GetOrders(), "OrderId", "OrderId", item.OrderID);
+            ViewBag.ProductID = new SelectList(unitOfWork.GetProducts(), "ProductId", "Name", item.ProductID);
             return View(item);
         }
 
@@ -78,13 +71,13 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = await unitOfWork.ItemRepository.GetAsync((int)id);
+            Item item = await unitOfWork.GetItemAsync((int)id);
             if (item == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderID = new SelectList(unitOfWork.DbContext.Orders, "OrderId", "OrderId", item.OrderID);
-            ViewBag.ProductID = new SelectList(unitOfWork.DbContext.Products, "ProductId", "Name", item.ProductID);
+            ViewBag.OrderID = new SelectList(unitOfWork.GetOrders(), "OrderId", "OrderId", item.OrderID);
+            ViewBag.ProductID = new SelectList(unitOfWork.GetProducts(), "ProductId", "Name", item.ProductID);
             return View(item);
         }
 
@@ -97,12 +90,11 @@ namespace ValidataTestWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.ItemRepository.Update(item);
-                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.UpdateItemAsync(item);
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderID = new SelectList(unitOfWork.DbContext.Orders, "OrderId", "OrderId", item.OrderID);
-            ViewBag.ProductID = new SelectList(unitOfWork.DbContext.Products, "ProductId", "Name", item.ProductID);
+            ViewBag.OrderID = new SelectList(unitOfWork.GetOrders(), "OrderId", "OrderId", item.OrderID);
+            ViewBag.ProductID = new SelectList(unitOfWork.GetProducts(), "ProductId", "Name", item.ProductID);
             return View(item);
         }
 
@@ -113,7 +105,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = await unitOfWork.ItemRepository.GetAsync((int)id);
+            Item item = await unitOfWork.GetItemAsync((int)id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -126,9 +118,8 @@ namespace ValidataTestWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Item item = await unitOfWork.ItemRepository.GetAsync(id);
-            unitOfWork.ItemRepository.Delete(item);
-            await unitOfWork.SaveChangesAsync();
+            Item item = await unitOfWork.GetItemAsync(id);
+            await unitOfWork.DeleteItemAsync(item);
             return RedirectToAction("Index");
         }
 

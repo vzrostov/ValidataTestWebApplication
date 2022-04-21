@@ -3,7 +3,7 @@ using ValidataTest.Core.Models;
 
 namespace ValidataTest.Core.DAL
 {
-    public class CustomerDbContext : DbContext, ICustomerDbContext
+    internal class CustomerDbContext : DbContext, ICustomerDbContext
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }

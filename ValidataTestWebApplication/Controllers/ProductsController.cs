@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ValidataTest.Core.DAL;
 using ValidataTest.Core.Models;
-using ValidataTestWebApplication.DAL;
 
 namespace ValidataTestWebApplication.Controllers
 {
     public class ProductsController : Controller
     {
-        private InternalUnitOfWork unitOfWork;
+        private UnitOfWork unitOfWork;
 
         public ProductsController()
         {
-            unitOfWork = new InternalUnitOfWork();
+            unitOfWork = new UnitOfWork();
         }
 
         // GET: Products
         public async Task<ActionResult> Index()
         {
-            var products = unitOfWork.ProductRepository.GetAll();
+            var products = unitOfWork.GetProducts();
             return View(await products.ToListAsync());
         }
 
@@ -36,7 +30,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = await unitOfWork.ProductRepository.GetAsync((int)id);
+            Product product = await unitOfWork.GetProductAsync((int)id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -59,8 +53,7 @@ namespace ValidataTestWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.ProductRepository.Create(product);
-                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CreateProductAsync(product);
                 return RedirectToAction("Index");
             }
 
@@ -74,7 +67,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = await unitOfWork.ProductRepository.GetAsync((int)id);
+            Product product = await unitOfWork.GetProductAsync((int)id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -91,8 +84,7 @@ namespace ValidataTestWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.ProductRepository.Update(product);
-                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.UpdateProductAsync(product);
                 return RedirectToAction("Index");
             }
             return View(product);
@@ -105,7 +97,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = await unitOfWork.ProductRepository.GetAsync((int)id);
+            Product product = await unitOfWork.GetProductAsync((int)id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -118,9 +110,8 @@ namespace ValidataTestWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Product product = await unitOfWork.ProductRepository.GetAsync((int)id);
-            unitOfWork.ProductRepository.Delete(product);
-            await unitOfWork.SaveChangesAsync();
+            Product product = await unitOfWork.GetProductAsync((int)id);
+            await unitOfWork.DeleteProductAsync(product);
             return RedirectToAction("Index");
         }
 

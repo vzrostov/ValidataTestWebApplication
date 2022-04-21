@@ -160,9 +160,157 @@
         </member>
         <member name="M:ValidataTest.Core.DAL.UnitOfWork.DeleteOrderAsync(ValidataTest.Core.Models.Order)">
             <summary>
-            Delete Customer from the database
+            Delete Order from the database
             </summary>
             <param name="order"></param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.GetItems(System.Linq.Expressions.Expression{System.Func{ValidataTest.Core.Models.Item,System.Boolean}},System.Func{System.Linq.IQueryable{ValidataTest.Core.Models.Item},System.Linq.IOrderedQueryable{ValidataTest.Core.Models.Item}},System.String)">
+            <summary>
+            Get Items using settings for completeness of information
+            </summary>
+            <param name="filter">expression for selecting Items</param>
+            <param name="orderBy">function to order by rules</param>
+            <param name="includeProperties">comma-separated lists of Item properties to add in</param>
+            <returns>Queries of Items</returns>
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.GetItemAsync(System.Int32,System.String)">
+            <summary>
+            Get Item by ID using settings for completeness of information
+            </summary>
+            <param name="id">Id of Item for search</param>
+            <param name="includeProperties">comma-separated lists of Item properties to add in</param>
+            <returns>Asynchronous operation with result as Item or null</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.CreateItemAsync(ValidataTest.Core.Models.Item)">
+            <summary>
+            Create Item in the database
+            </summary>
+            <param name="item">Item for creating</param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.UpdateItemAsync(ValidataTest.Core.Models.Item)">
+            <summary>
+            Update Item in the database
+            </summary>
+            <param name="item"></param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.DeleteItemAsync(ValidataTest.Core.Models.Item)">
+            <summary>
+            Delete Item from the database
+            </summary>
+            <param name="item"></param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.GetProducts(System.Linq.Expressions.Expression{System.Func{ValidataTest.Core.Models.Product,System.Boolean}},System.Func{System.Linq.IQueryable{ValidataTest.Core.Models.Product},System.Linq.IOrderedQueryable{ValidataTest.Core.Models.Product}},System.String)">
+            <summary>
+            Get Products using settings for completeness of information
+            </summary>
+            <param name="filter">expression for selecting Products</param>
+            <param name="orderBy">function to order by rules</param>
+            <param name="includeProperties">comma-separated lists of Product properties to add in</param>
+            <returns>Queries of Products</returns>
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.GetProductAsync(System.Int32,System.String)">
+            <summary>
+            Get Product by ID using settings for completeness of information
+            </summary>
+            <param name="id">Id of Product for search</param>
+            <param name="includeProperties">comma-separated lists of Product properties to add in</param>
+            <returns>Asynchronous operation with result as Product or null</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.CreateProductAsync(ValidataTest.Core.Models.Product)">
+            <summary>
+            Create Product in the database
+            </summary>
+            <param name="product">Product for creating</param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.UpdateProductAsync(ValidataTest.Core.Models.Product)">
+            <summary>
+            Update Product in the database
+            </summary>
+            <param name="product"></param>
+            <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>
+            <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateConcurrencyException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>        
+            <exception cref="T:System.OperationCanceledException">
+            <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+            </exception>       
+        </member>
+        <member name="M:ValidataTest.Core.DAL.UnitOfWork.DeleteProductAsync(ValidataTest.Core.Models.Product)">
+            <summary>
+            Delete Product from the database
+            </summary>
+            <param name="product"></param>
             <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
             <exception cref="T:System.Data.Entity.Infrastructure.DbUpdateException">
             <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>

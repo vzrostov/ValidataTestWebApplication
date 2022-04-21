@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Web;
-using ValidataTest.Core.Models;
 
 namespace ValidataTest.Core.DAL
 {
-    public class CommonRepository<T> : IRepository<T> where T : class
+    internal class CommonRepository<T> : IRepository<T> where T : class
     {
         ICustomerDbContext _customerDbContext = null; 
         DbSet<T> _dbSet = null;

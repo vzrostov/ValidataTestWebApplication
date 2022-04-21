@@ -17,6 +17,8 @@ namespace ValidataTest.Core.DAL
         private ICustomerDbContext customerDbContext;
         private CommonRepository<Customer> customerRepository;
         private CommonRepository<Order> orderRepository;
+        private CommonRepository<Item> itemRepository;
+        private CommonRepository<Product> productRepository;
         private bool IsForTesting { get; set; } = false;
 
         /// <summary>
@@ -212,7 +214,7 @@ namespace ValidataTest.Core.DAL
         }
 
         /// <summary>
-        /// Delete Customer from the database
+        /// Delete Order from the database
         /// </summary>
         /// <param name="order"></param>
         /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
@@ -228,6 +230,195 @@ namespace ValidataTest.Core.DAL
         public Task<int> DeleteOrderAsync(Order order)
         {
             OrderRepository.Delete(order);
+            return SaveChangesAsync();
+        }
+
+
+        /// <summary>
+        /// Get Items using settings for completeness of information
+        /// </summary>
+        /// <param name="filter">expression for selecting Items</param>
+        /// <param name="orderBy">function to order by rules</param>
+        /// <param name="includeProperties">comma-separated lists of Item properties to add in</param>
+        /// <returns>Queries of Items</returns>
+        public IQueryable<Item> GetItems(Expression<Func<Item, bool>> filter = null,
+            Func<IQueryable<Item>, IOrderedQueryable<Item>> orderBy = null,
+            string includeProperties = "")
+        {
+            return ItemRepository.GetAll(filter, orderBy, includeProperties);
+        }
+
+        /// <summary>
+        /// Get Item by ID using settings for completeness of information
+        /// </summary>
+        /// <param name="id">Id of Item for search</param>
+        /// <param name="includeProperties">comma-separated lists of Item properties to add in</param>
+        /// <returns>Asynchronous operation with result as Item or null</returns>
+        /// <exception cref="DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
+        public Task<Item> GetItemAsync(int id, string includeProperties = "")
+        {
+            return ItemRepository.GetAsync(id, includeProperties);
+        }
+
+        /// <summary>
+        /// Create Item in the database
+        /// </summary>
+        /// <param name="item">Item for creating</param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
+        public Task<int> CreateItemAsync(Item item)
+        {
+            ItemRepository.Create(item);
+            return SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Update Item in the database
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
+        public Task<int> UpdateItemAsync(Item item)
+        {
+            ItemRepository.Update(item);
+            return SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Delete Item from the database
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
+        public Task<int> DeleteItemAsync(Item item)
+        {
+            ItemRepository.Delete(item);
+            return SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Get Products using settings for completeness of information
+        /// </summary>
+        /// <param name="filter">expression for selecting Products</param>
+        /// <param name="orderBy">function to order by rules</param>
+        /// <param name="includeProperties">comma-separated lists of Product properties to add in</param>
+        /// <returns>Queries of Products</returns>
+        public IQueryable<Product> GetProducts(Expression<Func<Product, bool>> filter = null,
+            Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy = null,
+            string includeProperties = "")
+        {
+            return ProductRepository.GetAll(filter, orderBy, includeProperties);
+        }
+
+        /// <summary>
+        /// Get Product by ID using settings for completeness of information
+        /// </summary>
+        /// <param name="id">Id of Product for search</param>
+        /// <param name="includeProperties">comma-separated lists of Product properties to add in</param>
+        /// <returns>Asynchronous operation with result as Product or null</returns>
+        /// <exception cref="DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
+        public Task<Product> GetProductAsync(int id, string includeProperties = "")
+        {
+            return ProductRepository.GetAsync(id, includeProperties);
+        }
+
+        /// <summary>
+        /// Create Product in the database
+        /// </summary>
+        /// <param name="product">Product for creating</param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
+        public Task<int> CreateProductAsync(Product product)
+        {
+            ProductRepository.Create(product);
+            return SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Update Product in the database
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
+        public Task<int> UpdateProductAsync(Product product)
+        {
+            ProductRepository.Update(product);
+            return SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Delete Product from the database
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns>Asynchronous operation with result as the number of state entries written to the database</returns>
+        /// <exception cref="DbUpdateException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>
+        /// <exception cref="DbUpdateConcurrencyException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>        
+        /// <exception cref="System.OperationCanceledException">
+        /// <see href="https://docs.microsoft.com/en-US/dotnet/api/microsoft.entityframeworkcore.dbcontext.savechangesasync?view=efcore-6.0"/>
+        /// </exception>       
+        public Task<int> DeleteProductAsync(Product product)
+        {
+            ProductRepository.Delete(product);
             return SaveChangesAsync();
         }
 
@@ -254,6 +445,30 @@ namespace ValidataTest.Core.DAL
                     { IsForTesting = this.IsForTesting };
                 }
                 return orderRepository;
+            }
+        }
+
+        private CommonRepository<Item> ItemRepository
+        {
+            get
+            {
+                if (this.itemRepository == null)
+                {
+                    this.itemRepository = new CommonRepository<Item>(customerDbContext);
+                }
+                return itemRepository;
+            }
+        }
+
+        private CommonRepository<Product> ProductRepository
+        {
+            get
+            {
+                if (this.productRepository == null)
+                {
+                    this.productRepository = new CommonRepository<Product>(customerDbContext);
+                }
+                return productRepository;
             }
         }
 

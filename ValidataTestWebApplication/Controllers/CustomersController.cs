@@ -1,30 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using ValidataTestWebApplication.DAL;
+using ValidataTest.Core.DAL;
 using ValidataTest.Core.Models;
 
 namespace ValidataTestWebApplication.Controllers
 {
     public class CustomersController : Controller
     {
-        private InternalUnitOfWork unitOfWork;
+        private UnitOfWork unitOfWork;
 
         public CustomersController()
         {
-            unitOfWork = new InternalUnitOfWork();
+            unitOfWork = new UnitOfWork();
         }
 
         // GET: Customers
         public async Task<ActionResult> Index()
         {
-            var customers = unitOfWork.CustomerRepository.GetAll();
+            var customers = unitOfWork.GetCustomers();
             return View(await customers.ToListAsync());
         }
 
@@ -35,7 +31,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = await unitOfWork.CustomerRepository.GetAsync((int)id);
+            Customer customer = await unitOfWork.GetCustomerAsync((int)id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -60,8 +56,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    unitOfWork.CustomerRepository.Create(customer);
-                    await unitOfWork.SaveChangesAsync();
+                    await unitOfWork.CreateCustomerAsync(customer);
                     return RedirectToAction("Index");
                 }
             }
@@ -80,7 +75,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = await unitOfWork.CustomerRepository.GetAsync((int)id);
+            Customer customer = await unitOfWork.GetCustomerAsync((int)id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -99,8 +94,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    unitOfWork.CustomerRepository.Update(customer);
-                    await unitOfWork.SaveChangesAsync();
+                    await unitOfWork.UpdateCustomerAsync(customer);
                     return RedirectToAction("Index");
                 }
             }
@@ -119,7 +113,7 @@ namespace ValidataTestWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = await unitOfWork.CustomerRepository.GetAsync((int)id);
+            Customer customer = await unitOfWork.GetCustomerAsync((int)id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -134,9 +128,8 @@ namespace ValidataTestWebApplication.Controllers
         {
             try
             {
-                Customer customer = await unitOfWork.CustomerRepository.GetAsync(id);
-                unitOfWork.CustomerRepository.Delete(customer);
-                await unitOfWork.SaveChangesAsync();
+                Customer customer = await unitOfWork.GetCustomerAsync(id);
+                await unitOfWork.DeleteCustomerAsync(customer);
             }
             catch (DataException/* dex */)
             {

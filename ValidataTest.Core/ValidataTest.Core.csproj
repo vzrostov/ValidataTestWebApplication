@@ -54,8 +54,7 @@
   <ItemGroup>
     <Compile Include="DAL\CommonRepository.cs" />
     <Compile Include="DAL\CustomerDbContext.cs" />
-    <Compile Include="DAL\CustomerRepository.cs" />
-    <Compile Include="DAL\ICustomerDbContext.cs" />
+    <Compile Include="Interfaces\ICustomerDbContext.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Models\Customer.cs" />
